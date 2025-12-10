@@ -1,0 +1,13 @@
+name = "X-Bar Theory"
+filename = "x-bar-theory-1.0.8.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/NibiuFY6/versions/AC9O7bkP/x-bar-theory-1.0.8.jar"
+hash-format = "sha512"
+hash = "47fe92b72fec1895938a02e875750950e35ca3b81b7d5a729c2e6d47f64e2504c7ec06c75d20d624c069c467733d1018fd1d640514f4866d141a48a4d718b826"
+
+[update]
+[update.modrinth]
+mod-id = "NibiuFY6"
+version = "AC9O7bkP"
