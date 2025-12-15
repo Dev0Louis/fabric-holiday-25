@@ -5,5 +5,5 @@ mod/run/
 mod/.gradle/
 mod/build/
 mod/.idea/
-build/
 out/
+build/
