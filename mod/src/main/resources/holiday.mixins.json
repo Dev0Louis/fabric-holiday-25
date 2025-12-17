@@ -5,9 +5,16 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "EndPortalBlockMixin",
+    "EntityMixin",
+    "LivingEntityMixin",
+    "ServerPlayNetworkHandlerMixin",
     "WhitelistCommandMixin"
   ],
   "client": [
+    "ClientPlayerEntityMixin",
+    "GameMenuScreenAccessor",
+    "HeldItemRendererMixin",
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

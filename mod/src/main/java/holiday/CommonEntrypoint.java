@@ -2,6 +2,7 @@ package holiday;
 
 import com.mojang.serialization.Codec;
 import holiday.block.HolidayServerBlocks;
+import holiday.component.HolidayServerDataComponentTypes;
 import holiday.item.HolidayServerItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
@@ -53,6 +54,7 @@ public class CommonEntrypoint implements ModInitializer {
     @Override
     public void onInitialize() {
         HolidayServerBlocks.register();
+        HolidayServerDataComponentTypes.register();
         HolidayServerItems.register();
 
         PayloadTypeRegistry.configurationS2C().register(RequestVersionPayload.ID, RequestVersionPayload.PACKET_CODEC);

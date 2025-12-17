@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "N": "minecraft:nether_star",
+    "P": "minecraft:pig_spawn_egg"
+  },
+  "pattern": [
+    "I I",
+    "INI",
+    "IPI"
+  ],
+  "result": {
+    "id": "holiday-server-mod:absolutely_safe_armor"
+  }
+}

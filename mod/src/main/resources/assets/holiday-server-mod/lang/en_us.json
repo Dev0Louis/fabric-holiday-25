@@ -35,5 +35,7 @@
   "block.holiday-server-mod.banner.tater.white": "White Tater",
   "block.holiday-server-mod.banner.tater.yellow": "Yellow Tater",
   "item.holiday-server-mod.tater_banner_pattern": "Tater Banner Pattern",
-  "block.holiday-server-mod.tiny_potato": "Tiny Potato"
+  "block.holiday-server-mod.tiny_potato": "Tiny Potato",
+  "item.holiday-server-mod.absolutely_safe_armor": "Absolutely Safe Armor",
+  "item.holiday-server-mod.absolutely_safe_armor.exit_tooltip": "You are absolutely safe."
 }
