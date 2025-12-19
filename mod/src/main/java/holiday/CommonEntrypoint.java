@@ -153,7 +153,7 @@ public class CommonEntrypoint implements ModInitializer {
             for (int q1 = p; q1 < q; q1++)
                 for (int n2 = n1; n2 < o1; n2++) {
                     BlockState state = entity.getEntityWorld().getBlockState(mutablePos.set(p1, q1, n2));
-                    if (state.getBlock().equals(Blocks.REDSTONE_BLOCK)) { //Set the custom block here
+                    if (state.getBlock().equals(HolidayServerBlocks.ENDER_PARALYZER)) { //Set the custom block here
                         return true;
                     }
                 }
