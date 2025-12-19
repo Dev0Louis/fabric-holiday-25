@@ -4,6 +4,7 @@
   "package": "holiday.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "EndermanMixin",
     "EndPortalBlockMixin",
     "EntityMixin",
     "LivingEntityMixin",
