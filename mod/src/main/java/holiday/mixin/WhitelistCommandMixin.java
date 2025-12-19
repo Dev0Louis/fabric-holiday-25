@@ -52,15 +52,9 @@ public class WhitelistCommandMixin {
     )
     private static LiteralArgumentBuilder<ServerCommandSource> makeAddExecutableForEveryone(LiteralArgumentBuilder<ServerCommandSource> original) {
         var literal = original.getLiteral();
-        System.out.print(literal);
-        System.out.print(": ");
-
         if (literal.equals("add")) {
-            System.out.print("Always\n");
             return original.requires(CommandManager.requirePermissionLevel(CommandManager.ALWAYS_PASS_CHECK));
         } else {
-            System.out.print("Admin\n");
-
             return original.requires(CommandManager.requirePermissionLevel(CommandManager.ADMINS_CHECK));
         }
     }
