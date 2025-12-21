@@ -3,8 +3,8 @@ package holiday.item;
 import holiday.CommonEntrypoint;
 import holiday.block.HolidayServerBlocks;
 import holiday.component.HolidayServerDataComponentTypes;
+import holiday.tag.HolidayServerBannerPatternTags;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.EquippableComponent;
 import net.minecraft.entity.Entity;
@@ -15,8 +15,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.BannerPatternTags;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Unit;
 
@@ -30,8 +28,8 @@ public final class HolidayServerItems {
             .useBlockPrefixedTranslationKey()
             .equippableUnswappable(EquipmentSlot.HEAD)));
 
-    public static final Item FABRIC_PATTERN_ITEM = register("fabric_banner_pattern", new Item.Settings().maxCount(1).component(DataComponentTypes.PROVIDES_BANNER_PATTERNS, patternTagOf("pattern_item/fabric")));
-    public static final Item TATER_PATTERN_ITEM = register("tater_banner_pattern", new Item.Settings().maxCount(1).component(DataComponentTypes.PROVIDES_BANNER_PATTERNS, patternTagOf("pattern_item/tater")));
+    public static final Item FABRIC_PATTERN_ITEM = register("fabric_banner_pattern", new Item.Settings().maxCount(1).component(DataComponentTypes.PROVIDES_BANNER_PATTERNS, HolidayServerBannerPatternTags.FABRIC_PATTERN_ITEM));
+    public static final Item TATER_PATTERN_ITEM = register("tater_banner_pattern", new Item.Settings().maxCount(1).component(DataComponentTypes.PROVIDES_BANNER_PATTERNS, HolidayServerBannerPatternTags.TATER_PATTERN_ITEM));
 
     public static final Item ABSOLUTELY_SAFE_ARMOR = register("absolutely_safe_armor", new Item.Settings()
         .maxCount(1)
@@ -88,11 +86,6 @@ public final class HolidayServerItems {
         Item item = factory.apply(settings);
 
         return Registry.register(Registries.ITEM, key, item);
-    }
-
-
-    private static TagKey<BannerPattern> patternTagOf(String id) {
-        return TagKey.of(RegistryKeys.BANNER_PATTERN, CommonEntrypoint.identifier(id));
     }
 
     public static boolean isAbsolutelySafe(Entity entity) {
