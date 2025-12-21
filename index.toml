@@ -25,6 +25,10 @@ file = "mods/cloth-config.pw.toml"
 metafile = true
 
 [[files]]
+file = "mods/clumps.pw.toml"
+metafile = true
+
+[[files]]
 file = "mods/crossbow_scoping.pw.toml"
 metafile = true
 
