@@ -84,4 +84,17 @@ public class HopperMiteItem extends Item {
             HopperMiteItem.playEatSound(world, pos);
         }
     }
+
+    public static boolean isFood(Inventory inventory, ItemStack stack) {
+        for (int slot = 0; slot < inventory.size(); slot++) {
+            ItemStack slotStack = inventory.getStack(slot);
+            RegistryEntry<Item> item = slotStack.get(HolidayServerDataComponentTypes.MITE_FOOD);
+
+            if (item != null && stack.isOf(item.value())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

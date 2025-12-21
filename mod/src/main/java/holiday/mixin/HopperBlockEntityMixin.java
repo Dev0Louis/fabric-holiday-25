@@ -47,4 +47,15 @@ public class HopperBlockEntityMixin {
             ci.setReturnValue(false);
         }
     }
+
+    @Inject(
+            method = "transfer(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/inventory/Inventory;Lnet/minecraft/item/ItemStack;ILnet/minecraft/util/math/Direction;)Lnet/minecraft/item/ItemStack;",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private static void preventTransferringMiteFood(Inventory from, Inventory to, ItemStack stack, int slot, Direction side, CallbackInfoReturnable<ItemStack> ci) {
+        if (HopperMiteItem.isFood(from, stack)) {
+            ci.setReturnValue(stack);
+        }
+    }
 }
