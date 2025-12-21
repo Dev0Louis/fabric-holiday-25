@@ -121,6 +121,10 @@ file = "mods/strawberrylib.pw.toml"
 metafile = true
 
 [[files]]
+file = "mods/styled-nicknames.pw.toml"
+metafile = true
+
+[[files]]
 file = "mods/superb-steeds.pw.toml"
 metafile = true
 
