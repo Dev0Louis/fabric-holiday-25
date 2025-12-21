@@ -3,6 +3,7 @@ package holiday;
 import com.mojang.serialization.Codec;
 import holiday.block.HolidayServerBlocks;
 import holiday.component.HolidayServerDataComponentTypes;
+import holiday.event.EndermanParalyzeEvent;
 import holiday.item.HolidayServerItems;
 import holiday.loot.HolidayServerLootContextTypes;
 import holiday.sound.HolidayServerSoundEvents;
@@ -13,6 +14,9 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -27,6 +31,9 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,6 +87,8 @@ public class CommonEntrypoint implements ModInitializer {
 
             context.networkHandler().completeTask(CheckVersionTask.KEY);
         });
+
+        EndermanParalyzeEvent.EVENT.register((this::getIsParalyzed));
     }
 
     private static void disconnect(ServerConfigurationNetworkHandler handler, String currentVersion) {
@@ -132,5 +141,26 @@ public class CommonEntrypoint implements ModInitializer {
         public Id<? extends CustomPayload> getId() {
             return ID;
         }
+    }
+
+    public boolean getIsParalyzed(LivingEntity entity) {
+        Box box = entity.getBoundingBox().expand(8.0D, 8.0D, 8.0D);
+        int n = MathHelper.floor(box.minX);
+        int o = MathHelper.floor(box.maxX);
+        int p = MathHelper.floor(box.minY);
+        int q = MathHelper.floor(box.maxY);
+        int n1 = MathHelper.floor(box.minZ);
+        int o1 = MathHelper.floor(box.maxZ);
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+
+        for (int p1 = n; p1 < o; p1++)
+            for (int q1 = p; q1 < q; q1++)
+                for (int n2 = n1; n2 < o1; n2++) {
+                    BlockState state = entity.getEntityWorld().getBlockState(mutablePos.set(p1, q1, n2));
+                    if (state.getBlock().equals(HolidayServerBlocks.ENDER_PARALYZER)) { //Set the custom block here
+                        return true;
+                    }
+                }
+        return false;
     }
 }

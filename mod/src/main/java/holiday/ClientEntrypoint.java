@@ -1,7 +1,9 @@
 package holiday;
 
+import holiday.block.HolidayServerBlocks;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
@@ -10,10 +12,13 @@ import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.ChunkSectionCache;
+import net.minecraft.world.chunk.ChunkSection;
 import org.joml.Matrix3x2fStack;
 
 import holiday.item.HolidayServerItems;
@@ -53,6 +58,8 @@ public class ClientEntrypoint implements ClientModInitializer {
                 });
             }
         });
+
+        BlockRenderLayerMap.putBlock(HolidayServerBlocks.ENDER_PARALYZER, BlockRenderLayer.CUTOUT);
     }
 
     private static void afterTitleScreenRender(Screen screen, DrawContext drawContext, int mouseX, int mouseY, float tickDelta) {

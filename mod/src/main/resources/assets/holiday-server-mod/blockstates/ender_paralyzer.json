@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "holiday-server-mod:block/ender_paralyzer"
+    }
+  }
+}

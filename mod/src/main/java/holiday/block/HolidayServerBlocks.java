@@ -1,9 +1,9 @@
 package holiday.block;
 
 import holiday.CommonEntrypoint;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
+import net.minecraft.block.enums.SculkSensorPhase;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -26,12 +26,18 @@ public final class HolidayServerBlocks {
             .nonOpaque()
             .sounds(BlockSoundGroup.CROP)));
 
+    public static final Block ENDER_PARALYZER = register("ender_paralyzer", settings -> new EnderParalyzerBlock(settings
+        .mapColor(MapColor.PALE_PURPLE)
+        .strength(1.5F)
+        .sounds(BlockSoundGroup.SCULK_SENSOR)
+        .luminance(state -> 1)));
     private HolidayServerBlocks() {
     }
 
     public static void register() {
         Registry.register(Registries.BLOCK_TYPE, CommonEntrypoint.identifier("redstone_sand"), RedstoneSandBlock.CODEC);
         Registry.register(Registries.BLOCK_TYPE, CommonEntrypoint.identifier("tiny_potato"), TinyPotatoBlock.CODEC);
+        Registry.register(Registries.BLOCK_TYPE, CommonEntrypoint.identifier("ender_paralyzer"), EnderParalyzerBlock.CODEC);
     }
 
     public static Block register(String path, Function<Block.Settings, Block> factory) {
