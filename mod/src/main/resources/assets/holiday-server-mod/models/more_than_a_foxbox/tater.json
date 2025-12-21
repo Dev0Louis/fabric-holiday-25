@@ -1,0 +1,32 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"ambientocclusion": false,
+	"textures": {
+		"front": "holiday-server-mod:item/plushie/tater_front",
+		"side": "holiday-server-mod:item/plushie/tater_side",
+		"particle": "holiday-server-mod:item/plushie/tater_top",
+		"top": "holiday-server-mod:item/plushie/tater_top"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 5],
+			"to": [11, 10, 11],
+			"rotation": {"x": 0, "y": 0, "z": 0, "origin": [-1, 0, 1]},
+			"faces": {
+				"north": {"uv": [0, 0, 8, 12], "texture": "#front"},
+				"east": {"uv": [0, 0, 8, 12], "texture": "#side"},
+				"south": {"uv": [0, 0, 8, 12], "texture": "#side"},
+				"west": {"uv": [0, 0, 8, 12], "texture": "#side"},
+				"up": {"uv": [0, 0, 8, 8], "texture": "#top"},
+				"down": {"uv": [0, 0, 8, 8], "texture": "#top", "cullface": "down"}
+			}
+		}
+	],
+	"display": {
+		"head": {
+			"translation": [0, 14.25, 0]
+		}
+	}
+}

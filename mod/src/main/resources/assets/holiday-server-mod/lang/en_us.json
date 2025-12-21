@@ -45,5 +45,7 @@
   "subtitles.item.holiday-server-mod.hopper_mite.eat": "Hopper Mite eats",
   "tag.block.holiday-server-mod.crying_impactors": "Crying Impactors",
   "painting.holiday-server-mod.outdated.title": "Outdated",
-  "painting.holiday-server-mod.outdated.author": "Fabric Contributors"
+  "painting.holiday-server-mod.outdated.author": "Fabric Contributors",
+  "item.more_than_a_foxbox.plushies.holiday-server-mod.tater": "Tater Plushie",
+  "subtitles.holiday-server-mod.tater_hurt": "The Tiny Potato endures eternal torment, reduced to a mere device of comedy"
 }

@@ -39,5 +39,19 @@
       }
     ],
     "subtitle": "subtitles.item.holiday-server-mod.hopper_mite.eat"
-  }
+  },
+	"tater_hurt": {
+		"subtitle": "subtitles.holiday-server-mod.tater_hurt",
+		"sounds": [
+			{
+				"name": "holiday-server-mod:tater_hit1"
+			},
+			{
+				"name": "holiday-server-mod:tater_hit2"
+			},
+			{
+				"name": "holiday-server-mod:tater_hit3"
+			}
+		]
+	}
 }

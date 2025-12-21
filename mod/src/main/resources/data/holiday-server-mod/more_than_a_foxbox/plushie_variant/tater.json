@@ -1,0 +1,11 @@
+{
+	"mob_sounds": {
+		"sound_id": "holiday-server-mod:tater_hurt"
+	},
+	"poses": {
+		"sit": "holiday-server-mod:more_than_a_foxbox/tater",
+		"stand": "holiday-server-mod:more_than_a_foxbox/tater",
+		"lay": "holiday-server-mod:more_than_a_foxbox/tater",
+		"box": "holiday-server-mod:more_than_a_foxbox/tater"
+	}
+}

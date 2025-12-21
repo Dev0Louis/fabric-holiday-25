@@ -1,0 +1,16 @@
+{
+	"type": "more_than_a_foxbox:sewing",
+
+	"shell": "holiday-server-mod:tiny_potato",
+	"filler": "#more_than_a_foxbox:polyfill",
+	"essence": "minecraft:potato",
+
+	"result": {
+		"id": "more_than_a_foxbox:plushie",
+		"components": {
+			"more_than_a_foxbox:plushie": {
+				"variant": "holiday-server-mod:tiny_potato"
+			}
+		}
+	}
+}
