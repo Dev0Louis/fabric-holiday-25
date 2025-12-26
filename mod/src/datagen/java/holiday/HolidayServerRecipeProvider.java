@@ -33,10 +33,34 @@ public class HolidayServerRecipeProvider extends FabricRecipeProvider {
                         .criterion("has_nether_star", this.conditionsFromItem(Items.NETHER_STAR))
                         .offerTo(this.exporter);
 
+                this.createShapeless(RecipeCategory.MISC, HolidayServerItems.DIFFICULTY_SPIKE)
+                        .input(Items.POINTED_DRIPSTONE)
+                        .input(Items.NETHER_STAR)
+                        .criterion("has_nether_star", this.conditionsFromItem(Items.NETHER_STAR))
+                        .offerTo(this.exporter);
+
+                this.createShapeless(RecipeCategory.MISC, HolidayServerItems.EASY_DIFFICULTY_TICKET)
+                        .input(Items.PAPER)
+                        .input(Items.SHORT_GRASS)
+                        .criterion("has_paper", this.conditionsFromItem(Items.PAPER))
+                        .offerTo(this.exporter);
+
                 this.createShapeless(RecipeCategory.MISC, HolidayServerItems.FABRIC_PATTERN_ITEM)
                         .input(Items.PAPER)
                         .input(Items.LOOM)
                         .criterion("has_loom", this.conditionsFromItem(Items.LOOM))
+                        .offerTo(this.exporter);
+
+                this.createShapeless(RecipeCategory.MISC, HolidayServerItems.HARD_DIFFICULTY_TICKET)
+                        .input(Items.PAPER)
+                        .input(Items.SNIFFER_EGG)
+                        .criterion("has_paper", this.conditionsFromItem(Items.PAPER))
+                        .offerTo(this.exporter);
+
+                this.createShapeless(RecipeCategory.MISC, HolidayServerItems.NORMAL_DIFFICULTY_TICKET)
+                        .input(Items.PAPER)
+                        .input(Items.LAPIS_LAZULI)
+                        .criterion("has_paper", this.conditionsFromItem(Items.PAPER))
                         .offerTo(this.exporter);
 
                 this.createShapeless(RecipeCategory.REDSTONE, HolidayServerItems.REDSTONE_SAND, 2)

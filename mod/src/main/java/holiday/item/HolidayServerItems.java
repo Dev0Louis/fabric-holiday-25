@@ -17,10 +17,14 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Unit;
+import net.minecraft.world.Difficulty;
 
 import java.util.function.Function;
 
 public final class HolidayServerItems {
+    public static final Item DIFFICULTY_SPIKE = register("difficulty_spike", settings -> new BlockItem(HolidayServerBlocks.DIFFICULTY_SPIKE, settings
+            .useBlockPrefixedTranslationKey()));
+
     public static final Item REDSTONE_SAND = register("redstone_sand", settings -> new BlockItem(HolidayServerBlocks.REDSTONE_SAND, settings
             .useBlockPrefixedTranslationKey()));
 
@@ -44,6 +48,15 @@ public final class HolidayServerItems {
             .build()
         )
     );
+
+    public static final Item EASY_DIFFICULTY_TICKET = register("easy_difficulty_ticket", new Item.Settings()
+            .component(HolidayServerDataComponentTypes.DIFFICULTY, Difficulty.EASY));
+
+    public static final Item NORMAL_DIFFICULTY_TICKET = register("normal_difficulty_ticket", new Item.Settings()
+            .component(HolidayServerDataComponentTypes.DIFFICULTY, Difficulty.NORMAL));
+
+    public static final Item HARD_DIFFICULTY_TICKET = register("hard_difficulty_ticket", new Item.Settings()
+            .component(HolidayServerDataComponentTypes.DIFFICULTY, Difficulty.HARD));
 
     public static Item register(String id, Item.Settings settings) {
         return register(keyOf(id), Item::new, settings);
@@ -70,10 +83,13 @@ public final class HolidayServerItems {
             entries.addAfter(Items.TURTLE_HELMET, ABSOLUTELY_SAFE_ARMOR);
         });
 
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register((itemGroup) ->
-                itemGroup.addAfter(Items.MOJANG_BANNER_PATTERN, FABRIC_PATTERN_ITEM, TATER_PATTERN_ITEM));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
+            entries.addAfter(Items.PHANTOM_MEMBRANE, EASY_DIFFICULTY_TICKET, NORMAL_DIFFICULTY_TICKET, HARD_DIFFICULTY_TICKET);
+            entries.addAfter(Items.MOJANG_BANNER_PATTERN, FABRIC_PATTERN_ITEM, TATER_PATTERN_ITEM);
+        });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
+            entries.addBefore(Items.BEACON, DIFFICULTY_SPIKE);
             entries.addBefore(Items.SKELETON_SKULL, TINY_POTATO);
         });
 

@@ -9,6 +9,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Unit;
+import net.minecraft.world.Difficulty;
 
 import java.util.function.Consumer;
 
@@ -16,6 +17,10 @@ public final class HolidayServerDataComponentTypes {
     public static final ComponentType<Unit> ABSOLUTELY_SAFE = register("absolutely_safe", builder -> builder
         .codec(Unit.CODEC)
         .packetCodec(Unit.PACKET_CODEC));
+
+    public static final ComponentType<Difficulty> DIFFICULTY = register("difficulty", builder -> builder
+        .codec(Difficulty.CODEC)
+        .packetCodec(Difficulty.PACKET_CODEC));
 
     public static final ComponentType<RegistryEntry<Item>> MITE_FOOD = register("mite_food", builder -> builder
         .codec(Item.ENTRY_CODEC)

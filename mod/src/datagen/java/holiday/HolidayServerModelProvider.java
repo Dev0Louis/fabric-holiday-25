@@ -18,6 +18,7 @@ public class HolidayServerModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator generator) {
+        generator.registerTintableCross(HolidayServerBlocks.DIFFICULTY_SPIKE, BlockStateModelGenerator.CrossType.NOT_TINTED);
         generator.registerSimpleCubeAll(HolidayServerBlocks.REDSTONE_SAND);
         generator.registerNorthDefaultHorizontalRotatable(HolidayServerBlocks.TINY_POTATO);
     }
@@ -25,8 +26,11 @@ public class HolidayServerModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator generator) {
         generator.register(HolidayServerItems.ABSOLUTELY_SAFE_ARMOR, Models.GENERATED);
+        generator.register(HolidayServerItems.EASY_DIFFICULTY_TICKET, Models.GENERATED);
         generator.register(HolidayServerItems.FABRIC_PATTERN_ITEM, Models.GENERATED);
+        generator.register(HolidayServerItems.HARD_DIFFICULTY_TICKET, Models.GENERATED);
         this.registerMite(generator, HolidayServerItems.HOPPER_MITE);
+        generator.register(HolidayServerItems.NORMAL_DIFFICULTY_TICKET, Models.GENERATED);
         generator.register(HolidayServerItems.TATER_PATTERN_ITEM, Models.GENERATED);
     }
 
