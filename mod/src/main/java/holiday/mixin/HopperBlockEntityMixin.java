@@ -23,6 +23,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -84,8 +87,19 @@ public abstract class HopperBlockEntityMixin {
     )
     private static ItemStack fastGolden(HopperBlockEntity instance, int slot, int amount, Operation<ItemStack> original) {
         if (instance instanceof GoldenHopperBlockEntity) {
-            return original.call(instance, slot, instance.getStack(slot).getCount());
-        }
+            ItemStack stack = instance.getStack(slot);
+            if (stack.isEmpty()) return ItemStack.EMPTY;
+
+            ItemStack toInsert = stack.copy();
+            ItemStack leftover = HopperBlockEntity.transfer(instance, invokeGetOutputInventory(instance.getWorld(), instance.getPos(), instance), toInsert, ((HopperBlockEntityMixin) (Object) instance).getFacing().getOpposite());
+
+            if (!leftover.isEmpty()) {
+                instance.setStack(slot, leftover);
+                return leftover;
+            } else {
+                instance.setStack(slot, ItemStack.EMPTY);
+                return toInsert;
+            }        }
         return original.call(instance, slot, amount);
     }
 
@@ -126,4 +140,10 @@ public abstract class HopperBlockEntityMixin {
             original.get().getStack().increment(_itemEntity.getStack().getCount());
         }
     }
+    @Invoker("getOutputInventory")
+    static Inventory invokeGetOutputInventory(World world, BlockPos pos, HopperBlockEntity blockEntity) {
+        throw new AssertionError("Mixin failed to apply");
+    }
+    @Accessor("facing")
+    abstract Direction getFacing();
 }
