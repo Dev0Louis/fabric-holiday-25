@@ -2,20 +2,27 @@ package holiday.mixin;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import holiday.entity.HeartEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.particle.TintedParticleEffect;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.dimension.DimensionTypes;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WitherEntity.class)
@@ -33,6 +40,9 @@ public abstract class WitherEntityMixin extends HostileEntity {
 
     @Shadow
     protected abstract double getHeadY(int headIndex);
+
+    @Shadow
+    private int blockBreakingCooldown;
 
     @Inject(
         method = "shootSkullAt(IDDDZ)V",
@@ -71,6 +81,36 @@ public abstract class WitherEntityMixin extends HostileEntity {
         }
 
         ci.cancel();
+    }
+
+    @WrapOperation(
+        method = "tickMovement",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/World;addParticleClient(Lnet/minecraft/particle/ParticleEffect;DDDDDD)V")
+    )
+    private void wrapAddParticleClient(World instance, ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Operation<Void> original) {
+        if (instance.getDimensionEntry().matchesKey(DimensionTypes.OVERWORLD)) {
+            original.call(instance, ParticleTypes.HEART, x, y, z, velocityX, velocityY, velocityZ);
+        } else {
+            original.call(instance, parameters, x, y, z, velocityX, velocityY, velocityZ);
+        }
+    }
+
+    @Redirect(
+        method = "mobTick",
+        at = @At(
+            value = "FIELD",
+            target = "Lnet/minecraft/entity/boss/WitherEntity;blockBreakingCooldown:I",
+            opcode = Opcodes.GETFIELD,
+            ordinal = 0
+        )
+    )
+    private int overrideCooldown(WitherEntity instance) {
+        if (instance.getEntityWorld().getDimensionEntry().matchesKey(DimensionTypes.OVERWORLD)) {
+            return 0;
+        }
+        return this.blockBreakingCooldown;
     }
 
 }
