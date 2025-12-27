@@ -10,7 +10,11 @@ import net.minecraft.component.type.EquippableComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.Potions;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -52,6 +56,16 @@ public final class HolidayServerItems {
 
     public static final Item GOLDEN_HOPPER = register("golden_hopper", settings -> new BlockItem(HolidayServerBlocks.GOLDEN_HOPPER, settings
         .useBlockPrefixedTranslationKey()));
+
+    public static final Potion HASTE_POTION = Registry.register(
+        Registries.POTION,
+        RegistryKey.of(RegistryKeys.POTION, CommonEntrypoint.identifier("haste_potion")),
+        new Potion("haste", new StatusEffectInstance(
+            StatusEffects.HASTE,
+            9600,
+            2
+        ))
+    );
 
     public static Item register(String id, Item.Settings settings) {
         return register(keyOf(id), Item::new, settings);

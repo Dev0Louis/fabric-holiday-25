@@ -11,6 +11,7 @@
     "EndPortalBlockMixin",
     "EntityMixin",
     "HopperBlockEntityMixin",
+    "HostileEntityMixin",
     "InventorySlotWrapperMixin",
     "InventoryStorageImplAccessor",
     "ItemEntityMixin",
@@ -21,13 +22,15 @@
     "ServerPlayNetworkHandlerMixin",
     "SingleStackStorageMixin",
     "SlipperyMixin",
-    "WhitelistCommandMixin"
+    "WhitelistCommandMixin",
+    "WitherEntityMixin"
   ],
   "client": [
     "ClientPlayerEntityMixin",
     "GameMenuScreenAccessor",
     "HeldItemRendererMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "WitherEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
