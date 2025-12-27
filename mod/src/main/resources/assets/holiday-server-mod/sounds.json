@@ -53,11 +53,5 @@
 				"name": "holiday-server-mod:tater_hit3"
 			}
 		]
-	},
-  "baritone_sound": {
-    "subtitle": "baritone",
-    "sounds": [
-      "holiday-server-mod:baritone_sound"
-    ]
-  }
+	}
 }
