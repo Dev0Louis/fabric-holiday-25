@@ -52,5 +52,6 @@
   "subtitles.holiday-server-mod.tater_hurt": "Tater Plushie hurt",
   "effect.holiday-server-mod.slippery": "Slippery",
   "item.minecraft.potion.effect.slippery": "Slippery",
-  "item.minecraft.potion.effect.long_slippery": "Long slippery"
+  "item.minecraft.potion.effect.long_slippery": "Long slippery",
+  "gamerule.holiday-server-mod.endportal_enabled": "End portal enabled"
 }
