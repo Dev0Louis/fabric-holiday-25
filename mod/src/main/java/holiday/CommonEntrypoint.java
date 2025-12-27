@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import holiday.block.HolidayServerBlocks;
 import holiday.block.blockentity.HolidayServerBlockEntities;
 import holiday.component.HolidayServerDataComponentTypes;
+import holiday.entity.effect.HolidayServerEffects;
 import holiday.event.EndermanParalyzeEvent;
 import holiday.item.HolidayServerItems;
 import holiday.loot.HolidayServerLootContextTypes;
@@ -24,6 +25,8 @@ import net.minecraft.block.LavaCauldronBlock;
 import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
@@ -57,7 +60,7 @@ import java.util.function.Consumer;
 
 @SuppressWarnings("UnstableApiUsage")
 public class CommonEntrypoint implements ModInitializer {
-    private static final String MOD_ID = "holiday-server-mod";
+    public static final String MOD_ID = "holiday-server-mod";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static final String CURRENT_VERSION = FabricLoader.getInstance()
@@ -82,6 +85,7 @@ public class CommonEntrypoint implements ModInitializer {
         HolidayServerLootContextTypes.register();
         HolidayServerSoundEvents.register();
         HolidayServerBlockEntities.register();
+        HolidayServerEffects.register();
 
         DispenserBehavior oldBucketBehavior = DispenserBlock.BEHAVIORS.get(Items.BUCKET);
         DispenserBehavior bucketBehavior = (pointer, stack) -> {

@@ -20,6 +20,7 @@
     "RedstoneTorchBlockMixin",
     "ServerPlayNetworkHandlerMixin",
     "SingleStackStorageMixin",
+    "SlipperyMixin",
     "WhitelistCommandMixin"
   ],
   "client": [
