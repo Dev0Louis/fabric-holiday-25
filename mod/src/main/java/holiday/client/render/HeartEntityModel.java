@@ -29,7 +29,7 @@ public class HeartEntityModel extends EntityModel<HeartEntityRenderState> {
 		.uv(16, 18).cuboid(-4.0F, -9.0F, -2.0F, 3.0F, 1.0F, 4.0F, new Dilation(0.0F))
 		.uv(20, 13).cuboid(1.0F, -9.0F, -2.0F, 3.0F, 1.0F, 4.0F, new Dilation(0.0F))
 		.uv(12, 23).cuboid(-3.0F, -10.0F, -2.0F, 1.0F, 1.0F, 4.0F, new Dilation(0.0F))
-		.uv(22, 23).cuboid(2.0F, -10.0F, -2.0F, 1.0F, 1.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 24.0F, 0.0F));
+		.uv(22, 23).cuboid(2.0F, -10.0F, -2.0F, 1.0F, 1.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 0.0F, 0.0F));
 		return TexturedModelData.of(modelData, 64, 64);
 	}
 

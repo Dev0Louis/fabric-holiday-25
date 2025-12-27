@@ -21,7 +21,7 @@
     "ServerPlayNetworkHandlerMixin",
     "SingleStackStorageMixin",
     "SlipperyMixin",
-    "WhitelistCommandMixin"
+    "WhitelistCommandMixin",
     "WhitelistCommandMixin",
     "WitherEntityMixin"
   ],

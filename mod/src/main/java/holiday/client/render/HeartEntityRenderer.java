@@ -5,6 +5,7 @@ import holiday.CommonEntrypoint;
 import holiday.entity.HeartEntity;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -37,8 +38,7 @@ public class HeartEntityRenderer extends EntityRenderer<HeartEntity, HeartEntity
             renderState,
             matrices,
             this.model.getLayer(TEXTURE),
-            //renderState.light,
-            -1048336,
+            renderState.light,
             OverlayTexture.DEFAULT_UV,
             renderState.outlineColor,
             null
