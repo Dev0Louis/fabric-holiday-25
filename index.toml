@@ -10,6 +10,10 @@ file = "config/extended_drawers.json"
 file = "config/promotedserver/servers.dat"
 
 [[files]]
+file = "mods/25w52dargon.pw.toml"
+metafile = true
+
+[[files]]
 file = "mods/ChainStyleWither-1.7.0.jar"
 
 [[files]]
