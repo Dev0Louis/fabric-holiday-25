@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WitherEntityRenderer.class)
-public class WitherEntityRendererMixin {
+public abstract class WitherEntityRendererMixin {
 
     @Unique
     private static final Identifier FRIENDLY_TEXTURE = CommonEntrypoint.identifier("textures/entity/wither/friendly_wither.png");
@@ -28,13 +28,15 @@ public class WitherEntityRendererMixin {
         cancellable = true
     )
     private void injectGetTexture(WitherEntityRenderState witherEntityRenderState, CallbackInfoReturnable<Identifier> cir) {
-        assert MinecraftClient.getInstance().player != null;
-        if (MinecraftClient.getInstance().player.getEntityWorld().getDimensionEntry().matchesKey(DimensionTypes.OVERWORLD)) {
-            int i = MathHelper.floor(witherEntityRenderState.invulnerableTimer);
-            Identifier texture = i > 0 && (i > 80 || i / 5 % 2 != 1) ? FRIENDLY_INVULNERABLE_TEXTURE : FRIENDLY_TEXTURE;
+        MinecraftClient client = MinecraftClient.getInstance();
 
-            cir.setReturnValue(texture);
-            cir.cancel();
+        if (client.player != null && client.player.getEntityWorld() != null) {
+            if (client.player.getEntityWorld().getDimensionEntry().matchesKey(DimensionTypes.OVERWORLD)) {
+                int i = MathHelper.floor(witherEntityRenderState.invulnerableTimer);
+                Identifier texture = i > 0 && (i > 80 || i / 5 % 2 != 1) ? FRIENDLY_INVULNERABLE_TEXTURE : FRIENDLY_TEXTURE;
+
+                cir.setReturnValue(texture);
+            }
         }
     }
 }
