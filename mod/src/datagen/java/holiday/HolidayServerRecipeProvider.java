@@ -52,6 +52,23 @@ public class HolidayServerRecipeProvider extends FabricRecipeProvider {
                         .offerTo(this.exporter);
 
                 this.offer2x2CompactingRecipe(RecipeCategory.DECORATIONS, HolidayServerItems.TINY_POTATO, Items.POTATO);
+
+                this.createShaped(RecipeCategory.MISC, HolidayServerItems.ENDER_PARALYZER)
+                    .input('#', Items.TWISTING_VINES)
+                    .input('E', Items.ENDER_EYE)
+                    .input('O', Items.OBSIDIAN)
+                    .pattern("#E#")
+                    .pattern("OOO")
+                    .offerTo(exporter);
+
+                this.createShaped(RecipeCategory.REDSTONE, HolidayServerItems.GOLDEN_HOPPER)
+                    .input('G', Items.GOLD_INGOT)
+                    .input('C', Items.CHEST)
+                    .pattern("G G")
+                    .pattern("GCG")
+                    .pattern(" G ")
+                    .offerTo(exporter);
+
             }
         };
     }
