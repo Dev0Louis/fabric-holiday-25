@@ -1,0 +1,15 @@
+name = "25w52dargon"
+filename = "dragonshot-1.0.0+1.21.11.jar"
+side = "both"
+
+[download]
+url = "https://github.com/ekulxam/25w52dargon/releases/download/1.0.0/dragonshot-1.0.0%2B1.21.11.jar"
+hash-format = "sha256"
+hash = "2549401f0619c3e43b7798f5b2166c13546317225e1faad34175315b952217ec"
+
+[update]
+[update.github]
+branch = "main"
+regex = "^.+(?<!-api|-dev|-dev-preshadow|-sources)\\.jar$"
+slug = "ekulxam/25w52dargon"
+tag = "1.0.0"
