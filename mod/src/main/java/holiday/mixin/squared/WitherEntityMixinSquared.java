@@ -10,11 +10,14 @@ import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@Pseudo
 @Mixin(value = WitherEntity.class, priority = 1500)
-public class WitherEntityMixinSquared extends HostileEntity {
+public abstract class WitherEntityMixinSquared extends HostileEntity {
     private WitherEntityMixinSquared(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -23,6 +26,7 @@ public class WitherEntityMixinSquared extends HostileEntity {
         ChainStyleWither compatability
      */
 
+    @Dynamic
     @SuppressWarnings("all")
     @TargetHandler(
         mixin = "dev.louis.chainstylewither.mixin.WitherBossMixin",
@@ -37,6 +41,7 @@ public class WitherEntityMixinSquared extends HostileEntity {
         }
     }
 
+    @Dynamic
     @SuppressWarnings("all")
     @TargetHandler(
         mixin = "dev.louis.chainstylewither.mixin.WitherBossMixin",

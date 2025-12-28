@@ -110,7 +110,7 @@ public abstract class WitherEntityMixin extends HostileEntity implements WitherE
         }
     }
 
-    @Redirect(
+    @WrapOperation(
         method = "mobTick",
         at = @At(
             value = "FIELD",
@@ -119,11 +119,11 @@ public abstract class WitherEntityMixin extends HostileEntity implements WitherE
             ordinal = 0
         )
     )
-    private int overrideCooldown(WitherEntity instance) {
+    private int overrideCooldown(WitherEntity instance, Operation<Integer> original) {
         if (fabric_holiday_25$isInOverWorld()) {
             return 0;
         }
-        return this.blockBreakingCooldown;
+        return original.call(instance);
     }
 
     @Override
