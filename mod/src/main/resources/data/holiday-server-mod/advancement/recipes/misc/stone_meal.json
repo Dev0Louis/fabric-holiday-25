@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:cobblestone"
+            "items": "minecraft:gravel"
           }
         ]
       },
@@ -16,17 +16,33 @@
         "recipe": "holiday-server-mod:stone_meal"
       },
       "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_fine_recipe": {
+      "conditions": {
+        "recipe": "holiday-server-mod:fine_gravel"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_ground_recipe": {
+      "conditions": {
+        "recipe": "holiday-server-mod:ground_gravel"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
       "has_the_recipe",
-      "has_stone"
+      "has_fine_recipe",
+      "has_ground_recipe",
+      "has_gravel"
     ]
   ],
   "rewards": {
     "recipes": [
-      "holiday-server-mod:stone_meal"
+      "holiday-server-mod:stone_meal",
+      "holiday-server-mod:fine_gravel",
+      "holiday-server-mod:ground_gravel"
     ]
   }
 }

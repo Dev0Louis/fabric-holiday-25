@@ -54,6 +54,8 @@ public final class HolidayServerItems {
         .useBlockPrefixedTranslationKey()));
 
     public static final Item STONE_MEAL = register("stone_meal", BoneMealItem::new);
+    public static final Item GROUND_GRAVEL = register("ground_gravel",  settings -> new Item(settings.recipeRemainder(Items.BOWL)));
+    public static final Item FINE_GRAVEL = register("fine_gravel", settings -> new Item(settings.recipeRemainder(Items.BOWL)));
 
     public static Item register(String id, Item.Settings settings) {
         return register(keyOf(id), Item::new, settings);
@@ -80,18 +82,21 @@ public final class HolidayServerItems {
             entries.addAfter(Items.TURTLE_HELMET, ABSOLUTELY_SAFE_ARMOR);
         });
 
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register((itemGroup) ->
-                itemGroup.addAfter(Items.MOJANG_BANNER_PATTERN, FABRIC_PATTERN_ITEM, TATER_PATTERN_ITEM));
-
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
-            entries.addBefore(Items.SKELETON_SKULL, TINY_POTATO);
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register((itemGroup) -> {
+                itemGroup.addAfter(Items.MOJANG_BANNER_PATTERN, FABRIC_PATTERN_ITEM, TATER_PATTERN_ITEM);
+                itemGroup.addAfter(Items.FLINT, GROUND_GRAVEL, FINE_GRAVEL);
         });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> entries.addBefore(Items.SKELETON_SKULL, TINY_POTATO));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.addAfter(Items.HOPPER, GOLDEN_HOPPER, HOPPER_MITE);
             entries.addAfter(Items.REDSTONE_BLOCK, REDSTONE_SAND, ENDER_PARALYZER);
+        });
 
-	});
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
+            entries.addAfter(Items.BONE_MEAL, STONE_MEAL);
+        });
     }
 
     public static Item register(String path, Function<Item.Settings, Item> factory) {

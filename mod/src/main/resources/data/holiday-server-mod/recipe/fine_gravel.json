@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "misc",
+  "category": "misc",
+  "pattern": [
+    "WWW",
+    "WGW",
+    "WWW"
+  ],
+  "key": {
+    "G": "holiday-server-mod:ground_gravel",
+    "W": "minecraft:water_bucket"
+  },
+  "result": {
+    "count": 3,
+    "id": "holiday-server-mod:fine_gravel"
+  }
+}

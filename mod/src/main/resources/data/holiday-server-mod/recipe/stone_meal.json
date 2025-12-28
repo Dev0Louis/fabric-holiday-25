@@ -1,13 +1,18 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
+  "group": "misc",
   "category": "misc",
-  "ingredients": [
-    [
-      "minecraft:gravel"
-    ]
+  "pattern": [
+    "CCC",
+    "CGC",
+    "CCC"
   ],
+  "key": {
+    "C": "minecraft:calcite",
+    "G": "holiday-server-mod:fine_gravel"
+  },
   "result": {
-    "count": 3,
+    "count": 1,
     "id": "holiday-server-mod:stone_meal"
   }
 }

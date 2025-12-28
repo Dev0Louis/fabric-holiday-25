@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "misc",
+  "category": "misc",
+  "pattern": [
+    "GFG",
+    "GGG",
+    "XXX"
+  ],
+  "key": {
+    "G": "minecraft:gravel",
+    "X": "minecraft:calcite",
+    "F": "minecraft:flint"
+  },
+  "result": {
+    "count": 9,
+    "id": "holiday-server-mod:ground_gravel"
+  }
+}
