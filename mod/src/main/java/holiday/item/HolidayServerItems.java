@@ -36,6 +36,9 @@ public final class HolidayServerItems {
 
     public static final Item ENDER_PARALYZER = register("ender_paralyzer", settings -> new BlockItem(HolidayServerBlocks.ENDER_PARALYZER, settings
         .useBlockPrefixedTranslationKey()));
+    
+    public static final Item SCULK_SILENCER = register("sculk_silencer", settings -> new BlockItem(HolidayServerBlocks.SCULK_SILENCER, settings
+        .useBlockPrefixedTranslationKey()));
 
     public static final Item FABRIC_PATTERN_ITEM = register("fabric_banner_pattern", new Item.Settings().maxCount(1).component(DataComponentTypes.PROVIDES_BANNER_PATTERNS, patternTagOf("pattern_item/fabric")));
     public static final Item TATER_PATTERN_ITEM = register("tater_banner_pattern", new Item.Settings().maxCount(1).component(DataComponentTypes.PROVIDES_BANNER_PATTERNS, patternTagOf("pattern_item/tater")));
@@ -101,7 +104,7 @@ public final class HolidayServerItems {
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.addAfter(Items.HOPPER, GOLDEN_HOPPER, HOPPER_MITE);
-            entries.addAfter(Items.REDSTONE_BLOCK, REDSTONE_SAND, ENDER_PARALYZER);
+            entries.addAfter(Items.REDSTONE_BLOCK, REDSTONE_SAND, ENDER_PARALYZER, SCULK_SILENCER);
 
 	});
     }

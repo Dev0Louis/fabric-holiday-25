@@ -22,6 +22,7 @@
     "ServerPlayNetworkHandlerMixin",
     "SingleStackStorageMixin",
     "SlipperyMixin",
+    "SonicBoomMixin",
     "WhitelistCommandMixin",
     "WitherEntityMixin"
   ],

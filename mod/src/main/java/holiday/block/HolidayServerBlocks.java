@@ -39,6 +39,8 @@ public final class HolidayServerBlocks {
         .sounds(BlockSoundGroup.METAL)
         .nonOpaque()
         .mapColor(MapColor.GOLD)));
+    
+    public static final Block SCULK_SILENCER = register("sculk_silencer", Block::new);
 
     private HolidayServerBlocks() {
     }
