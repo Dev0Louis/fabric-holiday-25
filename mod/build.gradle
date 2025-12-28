@@ -7,7 +7,10 @@ plugins {
 	id 'maven-publish'
 }
 
-version = project.mod_version
+def packInfo = file('../pack.toml').text
+def packVersionMatch = packInfo =~ /(?m)^\s*version\s*=\s*"(.*?)"\s*$/
+
+version = packVersionMatch[0][1]
 
 base {
 	archivesName = project.archives_base_name
