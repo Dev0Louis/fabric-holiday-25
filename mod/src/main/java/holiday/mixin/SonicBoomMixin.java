@@ -3,6 +3,7 @@ package holiday.mixin;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import holiday.block.HolidayServerBlocks;
+import holiday.sound.HolidayServerSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.MemoryModuleState;
@@ -29,6 +30,7 @@ public class SonicBoomMixin extends MultiTickTask<WardenEntity> {
         for (BlockPos pos : BlockPos.iterate(box)) {
             BlockState state = serverWorld.getBlockState(pos);
             if (state.isOf(HolidayServerBlocks.SCULK_SILENCER)) {
+                wardenEntity.playSound(HolidayServerSoundEvents.SONIC_BOOM_SILENCED, 3f, 1f);
                 return;
             }
         }

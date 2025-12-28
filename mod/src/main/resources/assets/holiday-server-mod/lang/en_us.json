@@ -53,5 +53,6 @@
   "effect.holiday-server-mod.slippery": "Slippery",
   "item.minecraft.potion.effect.slippery": "Slippery",
   "item.minecraft.potion.effect.long_slippery": "Long slippery",
-  "gamerule.holiday-server-mod.endportal_enabled": "End portal enabled"
+  "gamerule.holiday-server-mod.endportal_enabled": "End portal enabled",
+  "subtitles.holiday-server-mod.sonic_boom_silenced": "Warden boom silenced"
 }

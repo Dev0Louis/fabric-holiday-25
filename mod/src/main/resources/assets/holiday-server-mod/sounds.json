@@ -53,5 +53,13 @@
 				"name": "holiday-server-mod:tater_hit3"
 			}
 		]
-	}
+	},
+  "sonic_boom_silenced": {
+    "subtitle": "subtitles.holiday-server-mod.sonic_boom_silenced",
+    "sounds": [
+      {
+        "name": "holiday-server-mod:sonic_boom_silenced"
+      }
+    ]
+  }
 }

@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 
 public final class HolidayServerSoundEvents {
     public static final SoundEvent ITEM_HOPPER_MITE_EAT = register("item.hopper_mite.eat");
+    public static final SoundEvent SONIC_BOOM_SILENCED = register("sonic_boom_silenced");
 
     private HolidayServerSoundEvents() {
     }
