@@ -41,6 +41,8 @@
   "item.holiday-server-mod.absolutely_safe_armor.exit_tooltip": "You are absolutely safe.",
   "item.holiday-server-mod.hopper_mite": "Hopper Mite",
   "item.holiday-server-mod.hopper_mite.tooltip": "Diet of %s",
+  "item.holiday-server-mod.smoothie": "Smoothie",
+  "item.holiday-server-mod.smoothie.tooltip": "Drinking for %s second(s)",
   "subtitles.item.holiday-server-mod.hopper_mite.eat": "Hopper Mite eats",
   "tag.block.holiday-server-mod.crying_impactors": "Crying Impactors",
   "painting.holiday-server-mod.outdated.title": "Outdated",

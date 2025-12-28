@@ -6,15 +6,18 @@ import holiday.component.HolidayServerDataComponentTypes;
 import holiday.tag.HolidayServerBannerPatternTags;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ConsumableComponent;
 import net.minecraft.component.type.EquippableComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.*;
+import net.minecraft.item.consume.UseAction;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Unit;
 
@@ -33,6 +36,16 @@ public final class HolidayServerItems {
 
     public static final Item HOPPER_MITE = register("hopper_mite", settings -> new HopperMiteItem(settings
         .maxCount(1)));
+
+    public static final Item SMOOTHIE = register("smoothie", settings -> new SmoothieItem(settings
+        .maxCount(1)
+        .component(HolidayServerDataComponentTypes.TOTAL_DRINK_TIME, 0)
+        .component(DataComponentTypes.CONSUMABLE, ConsumableComponent.builder()
+            .consumeSeconds(ConsumableComponent.DEFAULT_CONSUME_SECONDS)
+            .useAction(UseAction.DRINK)
+            .sound(SoundEvents.ITEM_HONEY_BOTTLE_DRINK)
+            .consumeParticles(false)
+            .build())));
 
     public static final Item ABSOLUTELY_SAFE_ARMOR = register("absolutely_safe_armor", new Item.Settings()
         .maxCount(1)
@@ -80,6 +93,10 @@ public final class HolidayServerItems {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.addAfter(Items.HOPPER, HOPPER_MITE);
             entries.addAfter(Items.REDSTONE_BLOCK, REDSTONE_SAND);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(entries -> {
+            entries.addAfter(Items.LINGERING_POTION, SMOOTHIE);
         });
     }
 
