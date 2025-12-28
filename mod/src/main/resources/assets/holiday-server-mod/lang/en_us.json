@@ -67,4 +67,6 @@
   "subtitles.baritone": "Baritone plays",
   "block.holiday-server-mod.chunk_loader": "Chunk Loader",
   "block.holiday-server-mod.attribute_table": "Attribute Table"
+  "gamerule.holiday-server-mod.endportal_enabled": "End portal enabled",
+  "subtitles.holiday-server-mod.sonic_boom_silenced": "Warden boom silenced"
 }

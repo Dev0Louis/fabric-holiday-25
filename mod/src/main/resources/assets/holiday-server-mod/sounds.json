@@ -59,5 +59,13 @@
     "sounds": [
       "holiday-server-mod:baritone_sound"
     ]
+	},
+  "sonic_boom_silenced": {
+    "subtitle": "subtitles.holiday-server-mod.sonic_boom_silenced",
+    "sounds": [
+      {
+        "name": "holiday-server-mod:sonic_boom_silenced"
+      }
+    ]
   }
 }
