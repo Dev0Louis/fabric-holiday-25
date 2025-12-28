@@ -45,6 +45,8 @@ public final class HolidayServerBlocks {
         .sounds(BlockSoundGroup.METAL)
         .nonOpaque()
         .mapColor(MapColor.GOLD)));
+    
+    public static final Block SCULK_SILENCER = register("sculk_silencer", Block::new);
 
     public static final Block CHUNK_LOADER = register("chunk_loader", settings -> new ChunkLoaderBlock(settings
         .requiresTool()
