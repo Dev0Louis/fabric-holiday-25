@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 
 
 public class BaritoneInit {
-    private static BARITONE BARITONE;
+    public static BARITONE BARITONE;
     public static SoundEvent звукБаритону;
 
 	public static void onInitialize() {
