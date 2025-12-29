@@ -58,7 +58,7 @@ public class HolidayServerModelProvider extends FabricModelProvider {
         generator.registerItemModel(block.asItem());
         generator.blockStateCollector
             .accept(
-                VariantsBlockModelDefinitionCreator.of(Blocks.HOPPER)
+                VariantsBlockModelDefinitionCreator.of(block)
                     .with(
                         BlockStateVariantMap.models(Properties.HOPPER_FACING)
                             .register(Direction.DOWN, weightedVariant)
