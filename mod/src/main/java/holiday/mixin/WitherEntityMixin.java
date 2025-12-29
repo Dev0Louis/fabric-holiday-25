@@ -2,8 +2,11 @@ package holiday.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import holiday.ServerEntrypoint;
 import holiday.entity.HeartEntity;
 import holiday.idkwheretoputthis.WitherEntityExtension;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -50,7 +53,8 @@ public abstract class WitherEntityMixin extends HostileEntity implements WitherE
         cancellable = true
     )
     private void shootSkullAtMixin(int headIndex, double targetX, double targetY, double targetZ, boolean charged, CallbackInfo ci) {
-        if (!this.isSilent() && !this.fabric_holiday_25$isInOverWorld()) {
+        boolean shouldSilenceTather = FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER ? ServerEntrypoint.CONFIG != null && ServerEntrypoint.CONFIG.shouldSilenceTather() : true;
+        if (!this.isSilent() && (!this.fabric_holiday_25$isInOverWorld() || !shouldSilenceTather)) {
             this.getEntityWorld().syncWorldEvent(null, WorldEvents.WITHER_SHOOTS, this.getBlockPos(), 0);
         }
 
@@ -133,14 +137,16 @@ public abstract class WitherEntityMixin extends HostileEntity implements WitherE
             target = "Lnet/minecraft/entity/boss/ServerBossBar;addPlayer(Lnet/minecraft/server/network/ServerPlayerEntity;)V")
     )
     private void wrapAddPlayerToBossBar(ServerBossBar instance, ServerPlayerEntity player, Operation<Void> original) {
-        if (!fabric_holiday_25$isInOverWorld()) {
+        boolean shouldHideTatherBossBar = FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER ? ServerEntrypoint.CONFIG != null && ServerEntrypoint.CONFIG.shouldHideTatherBossBar() : true;
+        if (!fabric_holiday_25$isInOverWorld() || !shouldHideTatherBossBar) {
             original.call(instance, player);
         }
     }
 
     @Override
     public boolean canTarget(LivingEntity target) {
-        if (fabric_holiday_25$isInOverWorld() && target instanceof PlayerEntity) {
+        boolean shouldTatherTargetPlayers = FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER ? ServerEntrypoint.CONFIG != null && ServerEntrypoint.CONFIG.shouldTatherTargetPlayers() : false;
+        if (fabric_holiday_25$isInOverWorld() && target instanceof PlayerEntity && !shouldTatherTargetPlayers) {
             return false;
         } else {
             return super.canTarget(target);

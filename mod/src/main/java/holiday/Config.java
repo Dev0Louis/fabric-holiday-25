@@ -9,7 +9,10 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 public record Config(
-    String discordWebhookUrl
+    String discordWebhookUrl,
+    boolean shouldTatherTargetPlayers,
+    boolean shouldSilenceTather,
+    boolean shouldHideTatherBossBar
 ) {
     public static Config loadConfig() throws IOException {
         Path path = FabricLoader.getInstance().getConfigDir().resolve("holiday_server.properties");
@@ -20,7 +23,10 @@ public record Config(
         }
 
         var config = new Config(
-            get(properties, "discordWebhookUrl", "")
+            get(properties, "discordWebhookUrl", ""),
+            get(properties, "shouldTatherTargetPlayers", false),
+            get(properties, "shouldSilenceTather", true),
+            get(properties, "shouldHideTatherBossBar", true)
         );
 
         try (OutputStream os = Files.newOutputStream(path)) {
@@ -36,5 +42,9 @@ public record Config(
         }
 
         return properties.getProperty(key);
+    }
+
+    private static boolean get(Properties properties, String key, boolean defaultValue) {
+        return Boolean.parseBoolean(get(properties, key, Boolean.toString(defaultValue)));
     }
 }

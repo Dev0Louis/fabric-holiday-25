@@ -19,24 +19,23 @@ public class ServerEntrypoint implements DedicatedServerModInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerEntrypoint.class);
     private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
     private static final Gson GSON = new Gson();
+    public static Config CONFIG;
 
     @Override
     public void onInitializeServer() {
-        Config config;
-
         try {
-            config = Config.loadConfig();
+            CONFIG = Config.loadConfig();
         } catch (IOException e) {
             LOGGER.error("Failed to load config", e);
             throw new UncheckedIOException(e);
         }
 
-        if (config.discordWebhookUrl().isBlank()) {
+        if (CONFIG.discordWebhookUrl().isBlank()) {
             return;
         }
 
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> announce(handler.player, handler.player.getName().getString() + " joined the server", config.discordWebhookUrl()));
-        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> announce(handler.player, handler.player.getName().getString() + " left the server", config.discordWebhookUrl()));
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> announce(handler.player, handler.player.getName().getString() + " joined the server", CONFIG.discordWebhookUrl()));
+        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> announce(handler.player, handler.player.getName().getString() + " left the server", CONFIG.discordWebhookUrl()));
     }
 
     private static void announce(ServerPlayerEntity player, String message, String webookUrl) {
