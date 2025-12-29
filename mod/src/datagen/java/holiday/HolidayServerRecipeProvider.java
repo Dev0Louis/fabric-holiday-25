@@ -60,7 +60,7 @@ public class HolidayServerRecipeProvider extends FabricRecipeProvider {
                     .input('O', Items.OBSIDIAN)
                     .pattern("#E#")
                     .pattern("OOO")
-                    .criterion("has_potato", this.conditionsFromItem(Items.ENDER_EYE))
+                    .criterion("has_ender_eye", this.conditionsFromItem(Items.ENDER_EYE))
                     .offerTo(exporter);
 
                 this.createShaped(RecipeCategory.REDSTONE, HolidayServerItems.GOLDEN_HOPPER)
@@ -69,7 +69,7 @@ public class HolidayServerRecipeProvider extends FabricRecipeProvider {
                     .pattern("G G")
                     .pattern("GCG")
                     .pattern(" G ")
-                    .criterion("has_potato", this.conditionsFromItem(Items.GOLD_INGOT))
+                    .criterion("has_gold_ingot", this.conditionsFromItem(Items.GOLD_INGOT))
                     .offerTo(exporter);
 
                 this.createShaped(RecipeCategory.MISC, Items.ECHO_SHARD)
@@ -78,6 +78,10 @@ public class HolidayServerRecipeProvider extends FabricRecipeProvider {
                     .pattern("###")
                     .pattern("###")
                     .criterion("has_dust", this.conditionsFromItem(HolidayServerItems.ECHO_DUST))
+                    .offerTo(exporter);
+                this.createShapeless(RecipeCategory.MISC, HolidayServerItems.ECHO_DUST, 9)
+                    .input(Items.ECHO_SHARD)
+                    .criterion("has_echo_shard", this.conditionsFromItem(Items.ECHO_SHARD))
                     .offerTo(exporter);
 
                 this.createShaped(RecipeCategory.MISC, HolidayServerItems.GROUND_GRAVEL, 3)
