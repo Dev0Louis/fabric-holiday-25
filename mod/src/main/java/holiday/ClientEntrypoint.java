@@ -18,6 +18,7 @@ import org.joml.Matrix3x2fStack;
 
 import holiday.item.HolidayServerItems;
 import holiday.mixin.GameMenuScreenAccessor;
+import holiday.screen.HolidayServerScreens;
 
 public class ClientEntrypoint implements ClientModInitializer {
     private static final Identifier SNOW_TEXTURE = Identifier.ofVanilla("textures/environment/snow.png");
@@ -31,6 +32,8 @@ public class ClientEntrypoint implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        HolidayServerScreens.register();
+
         ClientConfigurationNetworking.registerGlobalReceiver(CommonEntrypoint.RequestVersionPayload.ID, (payload, context) -> {
             context.responseSender().sendPacket(new CommonEntrypoint.VersionResponsePayload(CommonEntrypoint.CURRENT_VERSION));
         });

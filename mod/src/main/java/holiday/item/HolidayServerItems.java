@@ -24,6 +24,9 @@ public final class HolidayServerItems {
     public static final Item REDSTONE_SAND = register("redstone_sand", settings -> new BlockItem(HolidayServerBlocks.REDSTONE_SAND, settings
             .useBlockPrefixedTranslationKey()));
 
+    public static final Item STORAGE_TERMINAL = register("storage_terminal", settings -> new BlockItem(HolidayServerBlocks.STORAGE_TERMINAL, settings
+            .useBlockPrefixedTranslationKey()));
+
     public static final Item TINY_POTATO = register("tiny_potato", settings -> new BlockItem(HolidayServerBlocks.TINY_POTATO, settings
             .useBlockPrefixedTranslationKey()
             .equippableUnswappable(EquipmentSlot.HEAD)));
@@ -74,6 +77,7 @@ public final class HolidayServerItems {
                 itemGroup.addAfter(Items.MOJANG_BANNER_PATTERN, FABRIC_PATTERN_ITEM, TATER_PATTERN_ITEM));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
+            entries.addAfter(Items.PINK_SHULKER_BOX, STORAGE_TERMINAL);
             entries.addBefore(Items.SKELETON_SKULL, TINY_POTATO);
         });
 

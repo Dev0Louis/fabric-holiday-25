@@ -20,6 +20,13 @@ public final class HolidayServerBlocks {
             .strength(0.5f)
             .sounds(BlockSoundGroup.SAND)));
 
+    public static final Block STORAGE_TERMINAL = register("storage_terminal", settings -> new StorageTerminalBlock(settings
+            .mapColor(MapColor.IRON_GRAY)
+            .instrument(NoteBlockInstrument.SNARE)
+            .strength(10)
+            .resistance(1200)
+            .sounds(BlockSoundGroup.HEAVY_CORE)));
+
     public static final Block TINY_POTATO = register("tiny_potato", settings -> new TinyPotatoBlock(settings
             .mapColor(MapColor.RAW_IRON_PINK)
             .breakInstantly()
@@ -31,6 +38,7 @@ public final class HolidayServerBlocks {
 
     public static void register() {
         Registry.register(Registries.BLOCK_TYPE, CommonEntrypoint.identifier("redstone_sand"), RedstoneSandBlock.CODEC);
+        Registry.register(Registries.BLOCK_TYPE, CommonEntrypoint.identifier("storage_terminal"), StorageTerminalBlock.CODEC);
         Registry.register(Registries.BLOCK_TYPE, CommonEntrypoint.identifier("tiny_potato"), TinyPotatoBlock.CODEC);
     }
 

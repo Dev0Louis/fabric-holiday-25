@@ -15,6 +15,7 @@ public class HolidayServerBlockLootTableProvider extends FabricBlockLootTablePro
     @Override
     public void generate() {
         this.addDrop(HolidayServerBlocks.REDSTONE_SAND);
+        this.addDrop(HolidayServerBlocks.STORAGE_TERMINAL);
         this.addDrop(HolidayServerBlocks.TINY_POTATO);
 
         this.lootTables.forEach((key, lootTable) -> {

@@ -9,6 +9,7 @@ import net.minecraft.client.data.BlockStateModelGenerator;
 import net.minecraft.client.data.ItemModelGenerator;
 import net.minecraft.client.data.ItemModels;
 import net.minecraft.client.data.Models;
+import net.minecraft.client.data.TexturedModel;
 import net.minecraft.item.Item;
 
 public class HolidayServerModelProvider extends FabricModelProvider {
@@ -19,6 +20,7 @@ public class HolidayServerModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator generator) {
         generator.registerSimpleCubeAll(HolidayServerBlocks.REDSTONE_SAND);
+        generator.registerSingleton(HolidayServerBlocks.STORAGE_TERMINAL, TexturedModel.CUBE_TOP);
         generator.registerNorthDefaultHorizontalRotatable(HolidayServerBlocks.TINY_POTATO);
     }
 

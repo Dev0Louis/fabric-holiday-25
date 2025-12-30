@@ -45,6 +45,16 @@ public class HolidayServerRecipeProvider extends FabricRecipeProvider {
                         .criterion("has_redstone", this.conditionsFromItem(Items.REDSTONE))
                         .offerTo(this.exporter);
 
+                this.createShaped(RecipeCategory.DECORATIONS, HolidayServerItems.STORAGE_TERMINAL)
+                        .input('I', Items.IRON_INGOT)
+                        .input('C', Items.CHEST)
+                        .input('H', Items.HEAVY_CORE)
+                        .pattern("ICI")
+                        .pattern("IHI")
+                        .pattern("III")
+                        .criterion("has_heavy_core", this.conditionsFromItem(Items.HEAVY_CORE))
+                        .offerTo(this.exporter);
+
                 this.createShapeless(RecipeCategory.MISC, HolidayServerItems.TATER_PATTERN_ITEM)
                         .input(Items.PAPER)
                         .input(Items.POTATO)

@@ -5,6 +5,8 @@ import holiday.block.HolidayServerBlocks;
 import holiday.component.HolidayServerDataComponentTypes;
 import holiday.item.HolidayServerItems;
 import holiday.loot.HolidayServerLootContextTypes;
+import holiday.screen.HolidayServerScreenHandlers;
+import holiday.screen.StorageTerminalScreenHandler;
 import holiday.sound.HolidayServerSoundEvents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
@@ -12,6 +14,7 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.network.PacketByteBuf;
@@ -59,10 +62,13 @@ public class CommonEntrypoint implements ModInitializer {
         HolidayServerDataComponentTypes.register();
         HolidayServerItems.register();
         HolidayServerLootContextTypes.register();
+        HolidayServerScreenHandlers.register();
         HolidayServerSoundEvents.register();
 
         PayloadTypeRegistry.configurationS2C().register(RequestVersionPayload.ID, RequestVersionPayload.PACKET_CODEC);
         PayloadTypeRegistry.configurationC2S().register(VersionResponsePayload.ID, VersionResponsePayload.PACKET_CODEC);
+
+        PayloadTypeRegistry.playC2S().register(StorageTerminalSearchPayload.ID, StorageTerminalSearchPayload.PACKET_CODEC);
 
         ServerConfigurationConnectionEvents.CONFIGURE.register((handler, server) -> {
             if (ServerConfigurationNetworking.canSend(handler, RequestVersionPayload.ID)) {
@@ -79,6 +85,12 @@ public class CommonEntrypoint implements ModInitializer {
             }
 
             context.networkHandler().completeTask(CheckVersionTask.KEY);
+        });
+
+        ServerPlayNetworking.registerGlobalReceiver(StorageTerminalSearchPayload.ID, (payload, context) -> {
+            if (context.player().currentScreenHandler instanceof StorageTerminalScreenHandler screenHandler) {
+                screenHandler.updateSearch(payload.search(), payload.skip());
+            }
         });
     }
 
@@ -127,6 +139,25 @@ public class CommonEntrypoint implements ModInitializer {
             PacketCodecs.STRING, VersionResponsePayload::version,
             VersionResponsePayload::new
         );
+
+        @Override
+        public Id<? extends CustomPayload> getId() {
+            return ID;
+        }
+    }
+
+    public record StorageTerminalSearchPayload(String search, int skip) implements CustomPayload {
+        public static final CustomPayload.Id<StorageTerminalSearchPayload> ID = new CustomPayload.Id<>(Identifier.of("holiday-server-mod", "storage_terminal_search"));
+        public static final PacketCodec<PacketByteBuf, StorageTerminalSearchPayload> PACKET_CODEC = PacketCodec.tuple(
+            PacketCodecs.string(StorageTerminalScreenHandler.MAX_SEARCH_LENGTH), StorageTerminalSearchPayload::search,
+            PacketCodecs.INTEGER, StorageTerminalSearchPayload::skip,
+            StorageTerminalSearchPayload::new
+        );
+
+        public StorageTerminalSearchPayload(String search, int skip) {
+            this.search = search;
+            this.skip = Math.max(0, skip);
+        }
 
         @Override
         public Id<? extends CustomPayload> getId() {
