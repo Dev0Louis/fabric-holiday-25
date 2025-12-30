@@ -14,7 +14,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.Potions;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -69,6 +68,11 @@ public final class HolidayServerItems {
             9600,
             2
         ))
+    );
+
+    public static final Item WITHER_CROWN = register("wither_crown", new Item.Settings()
+        .maxCount(1)
+        .equippable(EquipmentSlot.HEAD)
     );
 
     public static Item register(String id, Item.Settings settings) {

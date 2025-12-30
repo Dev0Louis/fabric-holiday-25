@@ -1,18 +1,16 @@
 package holiday;
 
-import java.util.concurrent.CompletableFuture;
-
 import holiday.baritone.BaritoneInit;
-import holiday.block.HolidayServerBlocks;
 import holiday.item.HolidayServerItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.block.Blocks;
 import net.minecraft.data.recipe.RecipeExporter;
 import net.minecraft.data.recipe.RecipeGenerator;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryWrapper;
+
+import java.util.concurrent.CompletableFuture;
 
 public class HolidayServerRecipeProvider extends FabricRecipeProvider {
     public HolidayServerRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registries) {
@@ -113,6 +111,13 @@ public class HolidayServerRecipeProvider extends FabricRecipeProvider {
                     .pattern("ggG")
                     .pattern("gnn")
                     .pattern("ggg")
+                    .criterion("has_gold_ingot", this.conditionsFromItem(Items.GOLD_INGOT))
+                    .offerTo(exporter);
+
+                this.createShaped(RecipeCategory.MISC, HolidayServerItems.WITHER_CROWN)
+                    .pattern("G G")
+                    .pattern("GGG")
+                    .input('G', Items.GOLD_INGOT)
                     .criterion("has_gold_ingot", this.conditionsFromItem(Items.GOLD_INGOT))
                     .offerTo(exporter);
             }
