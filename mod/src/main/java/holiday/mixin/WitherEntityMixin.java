@@ -147,8 +147,13 @@ public abstract class WitherEntityMixin extends HostileEntity implements WitherE
 
     @Override
     public boolean canTarget(LivingEntity target) {
-        if (target.getEquippedStack(EquipmentSlot.HEAD).isOf(HolidayServerItems.WITHER_CROWN) && ((FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER && ServerEntrypoint.CONFIG != null) ? ServerEntrypoint.CONFIG.shouldWitherOnlyAttackCrown() : true)) {
-            return super.canTarget(target);
+        boolean shouldWitherOnlyAttackCrown = (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER && ServerEntrypoint.CONFIG != null) ? ServerEntrypoint.CONFIG.shouldWitherOnlyAttackCrown() : true;
+
+        if (shouldWitherOnlyAttackCrown) {
+            if (target.getEquippedStack(EquipmentSlot.HEAD).isOf(HolidayServerItems.WITHER_CROWN))
+                return super.canTarget(target);
+            else
+                return false;
         }
 
         boolean shouldTatherTargetPlayers = FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER ? ServerEntrypoint.CONFIG != null && ServerEntrypoint.CONFIG.shouldTatherTargetPlayers() : false;
