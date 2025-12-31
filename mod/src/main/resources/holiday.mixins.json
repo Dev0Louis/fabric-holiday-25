@@ -16,6 +16,7 @@
   "client": [
     "ClientPlayerEntityMixin",
     "GameMenuScreenAccessor",
+    "HandledScreenMixin",
     "HeldItemRendererMixin",
     "MinecraftClientMixin"
   ],

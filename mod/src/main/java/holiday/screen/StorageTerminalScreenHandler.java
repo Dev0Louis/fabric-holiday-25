@@ -44,6 +44,8 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
     protected static final int INVENTORY_WIDTH = 9;
     protected static final int INVENTORY_HEIGHT = 5;
 
+    private static final int INVENTORY_SIZE = INVENTORY_WIDTH * INVENTORY_HEIGHT;
+
     public static final int MAX_SEARCH_LENGTH = 50;
 
     private static final Comparator<Object2LongMap.Entry<ItemVariant>> COMPARATOR = Comparator.<Object2LongMap.Entry<ItemVariant>>comparingLong(Object2LongMap.Entry::getLongValue)
@@ -60,6 +62,8 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
 
     private final Storage<ItemVariant> disconnectedStorage;
 
+    private final Property[] slotCounts = new Property[INVENTORY_SIZE];
+
     private final Property size = Property.create();
     private final Property connected = Property.create();
 
@@ -72,14 +76,19 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
         this.storagePos = storagePos;
         this.world = world == null ? playerInventory.player.getEntityWorld() : world;
 
-        this.inventory = new SimpleInventory(INVENTORY_WIDTH * INVENTORY_HEIGHT);
+        this.inventory = new SimpleInventory(INVENTORY_SIZE);
 
         int left = 9;
         int top = 18;
 
         for (int y = 0; y < INVENTORY_HEIGHT; y++) {
             for (int x = 0; x < INVENTORY_WIDTH; x++) {
-                this.addSlot(new LockedSlot(this.inventory, (y * INVENTORY_WIDTH) + x, left + x * 18, top + y * 18));
+                int index = (y * INVENTORY_WIDTH) + x;
+
+                this.slotCounts[index] = Property.create();
+                this.addProperty(this.slotCounts[index]);
+
+                this.addSlot(new LockedSlot(this.inventory, index, left + x * 18, top + y * 18));
             }
         }
 
@@ -183,6 +192,10 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
 
         this.inventory.clear();
 
+        for (Property property : this.slotCounts) {
+            property.set(0);
+        }
+
         Storage<ItemVariant> storage = this.getStorage();
         this.cachedStorage = storage;
 
@@ -212,10 +225,20 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
 
         for (Object2LongMap.Entry<ItemVariant> entry : entries) {
             int count = entry.getLongValue() > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) entry.getLongValue();
+
+            this.slotCounts[slot].set(count);
             this.inventory.setStack(slot, entry.getKey().toStack(count));
 
             slot += 1;
         }
+    }
+
+    public int getCount(Slot slot) {
+        if (slot.inventory == this.inventory) {
+            return this.slotCounts[slot.getIndex()].get();
+        }
+
+        return -1;
     }
 
     public int getSize() {
@@ -251,7 +274,7 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
     }
 
     private static Storage<ItemVariant> createDisconnectedStorage(Random random) {
-        Inventory inventory = new SimpleInventory(INVENTORY_WIDTH * INVENTORY_HEIGHT);
+        Inventory inventory = new SimpleInventory(INVENTORY_SIZE);
 
         for (int slot = 0; slot < inventory.size(); slot++) {
             ItemStack stack = new ItemStack(HolidayServerItems.UNSAFE_MEMORY);
