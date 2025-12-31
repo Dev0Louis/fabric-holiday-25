@@ -16,8 +16,11 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.input.CharInput;
 import net.minecraft.client.input.KeyInput;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 
 public class StorageTerminalScreen extends HandledScreen<StorageTerminalScreenHandler> {
@@ -27,6 +30,7 @@ public class StorageTerminalScreen extends HandledScreen<StorageTerminalScreenHa
     private static final Identifier SCROLLER_DISABLED_TEXTURE = Identifier.ofVanilla("container/creative_inventory/scroller_disabled");
 
     private static final Text SEARCH_LABEL = Text.translatable("itemGroup.search");
+    private static final Text NO_STORAGE_CONNECTED_TEXT = Text.translatable("text.holiday-server-mod.storage_terminal.no_storage_connected");
 
     private TextFieldWidget searchBox;
 
@@ -70,6 +74,26 @@ public class StorageTerminalScreen extends HandledScreen<StorageTerminalScreenHa
 
         context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, scrollable ? SCROLLER_TEXTURE : SCROLLER_DISABLED_TEXTURE, this.x + 175, this.y + 18 + (int) (this.scrollPosition * 95), 12, 15);
         this.searchBox.render(context, mouseX, mouseY, tickDelta);
+
+        if (!this.getScreenHandler().isConnected()) {
+            int x = (this.width - this.backgroundWidth) / 2;
+            int y = (this.height - this.backgroundHeight) / 2;
+
+            int textX = x + 90;
+            int textY = y + 62 - this.textRenderer.fontHeight / 2;
+
+            double dangerSpeed = this.client.options.getGlintSpeed().getValue();
+            double danger = dangerSpeed == 0 ? 1 : (float) (Math.sin((this.client.player.age + tickDelta) / 3 * dangerSpeed) + 1) / 2;
+
+            int backgroundColor = this.client.options.getTextBackgroundColor(0.8f);
+            int color = ColorHelper.lerp((float) danger, Colors.WHITE, Colors.RED);
+
+            OrderedText text = NO_STORAGE_CONNECTED_TEXT.asOrderedText();
+            int width = this.textRenderer.getWidth(text);
+
+            context.fill(textX - width / 2 - 3, textY - 3, textX + width / 2 + 2, textY + this.textRenderer.fontHeight + 2, backgroundColor);
+            context.drawTextWithShadow(this.textRenderer, text, textX - width / 2, textY, color);
+        }
 
         this.drawMouseoverTooltip(context, mouseX, mouseY);
     }

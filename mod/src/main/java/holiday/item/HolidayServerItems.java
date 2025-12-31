@@ -34,6 +34,9 @@ public final class HolidayServerItems {
     public static final Item FABRIC_PATTERN_ITEM = register("fabric_banner_pattern", new Item.Settings().maxCount(1).component(DataComponentTypes.PROVIDES_BANNER_PATTERNS, HolidayServerBannerPatternTags.FABRIC_PATTERN_ITEM));
     public static final Item TATER_PATTERN_ITEM = register("tater_banner_pattern", new Item.Settings().maxCount(1).component(DataComponentTypes.PROVIDES_BANNER_PATTERNS, HolidayServerBannerPatternTags.TATER_PATTERN_ITEM));
 
+    public static final Item UNSAFE_MEMORY = register("unsafe_memory", settings -> new UnsafeMemoryItem(settings
+        .maxCount(1)));
+
     public static final Item HOPPER_MITE = register("hopper_mite", settings -> new HopperMiteItem(settings
         .maxCount(1)));
 

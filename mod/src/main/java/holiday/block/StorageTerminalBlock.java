@@ -3,9 +3,6 @@ package holiday.block;
 import com.mojang.serialization.MapCodec;
 
 import holiday.screen.StorageTerminalScreenHandler;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +18,6 @@ public class StorageTerminalBlock extends Block {
     public static final MapCodec<StorageTerminalBlock> CODEC = createCodec(StorageTerminalBlock::new);
 
     private static final Text TITLE = Text.translatable("text.holiday-server-mod.storage_terminal.title");
-    private static final Text NO_STORAGE_CONNECTED_TEXT = Text.translatable("text.holiday-server-mod.storage_terminal.no_storage_connected");
 
     public StorageTerminalBlock(Settings settings) {
         super(settings);
@@ -38,12 +34,9 @@ public class StorageTerminalBlock extends Block {
 
     @Override
     protected NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-        Storage<ItemVariant> storage = ItemStorage.SIDED.find(world, pos.offset(StorageTerminalScreenHandler.STORAGE_DIRECTION), StorageTerminalScreenHandler.STORAGE_DIRECTION);
-        Text name = storage == null ? NO_STORAGE_CONNECTED_TEXT : TITLE;
-
         return new SimpleNamedScreenHandlerFactory((syncId, playerInventory, player) -> {
             return new StorageTerminalScreenHandler(syncId, playerInventory, pos.offset(StorageTerminalScreenHandler.STORAGE_DIRECTION), world);
-        }, name);
+        }, TITLE);
     }
 
     @Override

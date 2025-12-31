@@ -1,8 +1,11 @@
 package holiday.component;
 
+import com.mojang.serialization.Codec;
+
 import holiday.CommonEntrypoint;
 import net.minecraft.component.ComponentType;
 import net.minecraft.item.Item;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -16,6 +19,10 @@ public final class HolidayServerDataComponentTypes {
     public static final ComponentType<Unit> ABSOLUTELY_SAFE = register("absolutely_safe", builder -> builder
         .codec(Unit.CODEC)
         .packetCodec(Unit.PACKET_CODEC));
+
+    public static final ComponentType<Integer> MEMORY_VALUE = register("memory_value", builder -> builder
+        .codec(Codec.INT)
+        .packetCodec(PacketCodecs.INTEGER));
 
     public static final ComponentType<RegistryEntry<Item>> MITE_FOOD = register("mite_food", builder -> builder
         .codec(Item.ENTRY_CODEC)

@@ -18,6 +18,7 @@ import org.joml.Matrix3x2fStack;
 
 import holiday.item.HolidayServerItems;
 import holiday.mixin.GameMenuScreenAccessor;
+import holiday.render.HolidayServerNumericProperties;
 import holiday.screen.HolidayServerScreens;
 
 public class ClientEntrypoint implements ClientModInitializer {
@@ -32,6 +33,7 @@ public class ClientEntrypoint implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        HolidayServerNumericProperties.register();
         HolidayServerScreens.register();
 
         ClientConfigurationNetworking.registerGlobalReceiver(CommonEntrypoint.RequestVersionPayload.ID, (payload, context) -> {

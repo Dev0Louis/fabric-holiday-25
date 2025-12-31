@@ -39,6 +39,8 @@
   "block.holiday-server-mod.storage_terminal": "Storage Terminal",
   "text.holiday-server-mod.storage_terminal.title": "Terminal",
   "text.holiday-server-mod.storage_terminal.no_storage_connected": "No storage connected!",
+  "item.holiday-server-mod.unsafe_memory": "Unsafe Memory",
+  "item.holiday-server-mod.unsafe_memory.tooltip": "Value: 0x%s",
   "block.holiday-server-mod.tiny_potato": "Tiny Potato",
   "item.holiday-server-mod.absolutely_safe_armor": "Absolutely Safe Armor",
   "item.holiday-server-mod.absolutely_safe_armor.exit_tooltip": "You are absolutely safe.",

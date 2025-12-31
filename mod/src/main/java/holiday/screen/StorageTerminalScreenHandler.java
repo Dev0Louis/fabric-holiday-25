@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
 
+import holiday.item.HolidayServerItems;
+import holiday.item.UnsafeMemoryItem;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
@@ -16,6 +19,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.SlottedStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.FilteringStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,6 +35,7 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class StorageTerminalScreenHandler extends ScreenHandler {
@@ -50,9 +55,13 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
     private final BlockPos storagePos;
     private final World world;
 
+    private Storage<ItemVariant> cachedStorage = null;
     private final Inventory inventory;
 
+    private final Storage<ItemVariant> disconnectedStorage;
+
     private final Property size = Property.create();
+    private final Property connected = Property.create();
 
     private String search = "";
     private int skip = 0;
@@ -74,9 +83,13 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
             }
         }
 
+        this.disconnectedStorage = createDisconnectedStorage(playerInventory.player.getRandom());
+
         this.addPlayerSlots(playerInventory, left, top + 104);
 
         this.addProperty(this.size);
+        this.addProperty(this.connected);
+
         this.refresh();
     }
 
@@ -94,7 +107,7 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
 
         Storage<ItemVariant> storage = this.getStorage();
 
-        if (storage == null) {
+        if (storage != this.cachedStorage) {
             this.refresh();
         } else if ((inventorySlot || actionType == SlotActionType.QUICK_MOVE) && actionType != SlotActionType.CLONE) {
             if (slotIndex < 0 || slotIndex >= this.slots.size()) {
@@ -159,7 +172,8 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
             return null;
         }
 
-        return ItemStorage.SIDED.find(this.world, this.storagePos, STORAGE_DIRECTION);
+        Storage<ItemVariant> storage = ItemStorage.SIDED.find(this.world, this.storagePos, STORAGE_DIRECTION);
+        return storage == null ? this.disconnectedStorage : storage;
     }
 
     private void refresh() {
@@ -167,14 +181,12 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
             return;
         }
 
-        this.size.set(0);
         this.inventory.clear();
 
         Storage<ItemVariant> storage = this.getStorage();
+        this.cachedStorage = storage;
 
-        if (storage == null) {
-            return;
-        }
+        this.setConnected(storage != this.disconnectedStorage);
 
         Object2LongOpenHashMap<ItemVariant> map = new Object2LongOpenHashMap<ItemVariant>();
         Iterator<StorageView<ItemVariant>> iterator = storage.nonEmptyIterator();
@@ -210,6 +222,14 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
         return this.size.get();
     }
 
+    private void setConnected(boolean connected) {
+        this.connected.set(connected ? 1 : 0);
+    }
+
+    public boolean isConnected() {
+        return this.connected.get() > 0;
+    }
+
     public void updateSearch(String search, int skip) {
         if (!this.search.equals(search) || this.skip != skip) {
             this.search = search;
@@ -228,6 +248,19 @@ public class StorageTerminalScreenHandler extends ScreenHandler {
         String name = item.getName().getString();
 
         return name.toLowerCase(Locale.ROOT).contains(this.search.toLowerCase(Locale.ROOT));
+    }
+
+    private static Storage<ItemVariant> createDisconnectedStorage(Random random) {
+        Inventory inventory = new SimpleInventory(INVENTORY_WIDTH * INVENTORY_HEIGHT);
+
+        for (int slot = 0; slot < inventory.size(); slot++) {
+            ItemStack stack = new ItemStack(HolidayServerItems.UNSAFE_MEMORY);
+            UnsafeMemoryItem.setRandomMemoryValue(stack, random);
+
+            inventory.setStack(slot, stack);
+        }
+
+        return FilteringStorage.extractOnlyOf(InventoryStorage.of(inventory, null));
     }
 
     record Task(Storage<ItemVariant> from, Storage<ItemVariant> to, ItemVariant item, int maxAmount) implements Predicate<ItemVariant> {
