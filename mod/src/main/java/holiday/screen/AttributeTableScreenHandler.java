@@ -132,34 +132,44 @@ public class AttributeTableScreenHandler extends ScreenHandler {
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int slotIndex) {
-        ItemStack result = ItemStack.EMPTY;
+        ItemStack result;
         Slot slot = this.slots.get(slotIndex);
 
-        if (slot.hasStack()) {
-            ItemStack stack = slot.getStack();
-            result = stack.copy();
+        if (!slot.hasStack()) return ItemStack.EMPTY;
 
-            if (slotIndex < 3) {
-                // From table → player inventory
-                if (!this.insertItem(stack, 3, this.slots.size(), true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else {
-                // From player inventory → table inputs
-                if (!this.insertItem(stack, 0, 2, false)) {
-                    return ItemStack.EMPTY;
-                }
+        ItemStack stack = slot.getStack();
+        result = stack.copy();
+
+        if (slotIndex == 2) {
+            if (!this.insertItem(stack, 3, this.slots.size(), true)) {
+                return ItemStack.EMPTY;
             }
 
-            if (stack.isEmpty()) {
-                slot.setStack(ItemStack.EMPTY);
-            } else {
-                slot.markDirty();
+            inventory.setStack(0, ItemStack.EMPTY);
+            inventory.setStack(1, ItemStack.EMPTY);
+
+            slot.onQuickTransfer(stack, result);
+        }
+        else if (slotIndex < 2) {
+            if (!this.insertItem(stack, 3, this.slots.size(), false)) {
+                return ItemStack.EMPTY;
             }
+        }
+        else {
+            if (!this.insertItem(stack, 0, 2, false)) {
+                return ItemStack.EMPTY;
+            }
+        }
+
+        if (stack.isEmpty()) {
+            slot.setStack(ItemStack.EMPTY);
+        } else {
+            slot.markDirty();
         }
 
         return result;
     }
+
 
     @Override
     public boolean canUse(PlayerEntity player) {
