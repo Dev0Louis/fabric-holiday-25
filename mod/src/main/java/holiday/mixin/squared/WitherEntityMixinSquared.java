@@ -62,14 +62,31 @@ public abstract class WitherEntityMixinSquared extends HostileEntity {
 
     @TargetHandler(
         mixin = "dev.louis.chainstylewither.mixin.WitherBossMixin",
+        name = "drop"
+    )
+    @Inject(
+        method = "@MixinSquared:Handler",
+        at = @At("HEAD"),
+        remap = true,
+        require = 0
+    )
+    public void makeDropStateInOverworld(ServerWorld world, DamageSource damageSource, CallbackInfo info) {
+        if (!fabric_holiday_25$isInOverWorldInMixinSquared()) {
+            dropLootSkip = false;
+        }
+    }
+
+    @TargetHandler(
+        mixin = "dev.louis.chainstylewither.mixin.WitherBossMixin",
         name = "method_16080"
     )
     @Inject(
         method = "@MixinSquared:Handler",
         at = @At("HEAD"),
-        remap = true
+        remap = true,
+        require = 0
     )
-    public void makeDropStateInOverworld(ServerWorld world, DamageSource damageSource, CallbackInfo info) {
+    public void makeDropStateInOverworld2(ServerWorld world, DamageSource damageSource, CallbackInfo info) {
         if (!fabric_holiday_25$isInOverWorldInMixinSquared()) {
             dropLootSkip = false;
         }
