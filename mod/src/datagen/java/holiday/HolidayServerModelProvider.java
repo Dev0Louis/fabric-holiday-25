@@ -8,7 +8,6 @@ import holiday.state.HolidayServerProperties;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariant;
 import net.minecraft.client.render.model.json.WeightedVariant;
@@ -21,6 +20,7 @@ import net.minecraft.client.render.item.model.ItemModel;
 import net.minecraft.client.render.item.model.RangeDispatchItemModel;
 import net.minecraft.item.Item;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.Direction;
 
@@ -36,7 +36,7 @@ public class HolidayServerModelProvider extends FabricModelProvider {
         generator.registerNorthDefaultHorizontalRotatable(HolidayServerBlocks.TINY_POTATO);
         this.registerHopper(generator, HolidayServerBlocks.GOLDEN_HOPPER);
         this.registerPreModeled(generator, HolidayServerBlocks.TELE_INHIBITOR);
-        this.registerActivatable(generator, HolidayServerBlocks.CHUNK_LOADER);
+        this.registerChunkLoader(generator, HolidayServerBlocks.CHUNK_LOADER);
         this.registerColumnWithFront(generator, HolidayServerBlocks.ATTRIBUTE_TABLE);
     }
 
@@ -99,17 +99,21 @@ public class HolidayServerModelProvider extends FabricModelProvider {
         generator.registerItemModel(toRegister.asItem(), ModelIds.getBlockModelId(toRegister));
     }
 
-    private void registerActivatable(BlockStateModelGenerator generator, Block block) {
-        WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(ModelIds.getBlockModelId(block));
-        WeightedVariant weightedVariant2 = BlockStateModelGenerator.createWeightedVariant(ModelIds.getBlockSubModelId(block, "_on"));
-        generator.blockStateCollector
-            .accept(
-                VariantsBlockModelDefinitionCreator.of(block)
-                    .with(
-                        BlockStateVariantMap.models(HolidayServerProperties.ACTIVATED)
-                            .register(true, weightedVariant2)
-                            .register(false, weightedVariant)
-                    ));
+    private void registerChunkLoader(BlockStateModelGenerator generator, Block block) {
+        Identifier off = Models.CUBE_COLUMN.upload(
+            block,
+            new TextureMap()
+                .put(TextureKey.END, ModelIds.getBlockSubModelId(block, "_top"))
+                .put(TextureKey.SIDE, ModelIds.getBlockModelId(block)),
+            generator.modelCollector
+        );
+
+        generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block)
+            .with(BlockStateVariantMap.models(HolidayServerProperties.ACTIVATED)
+                .register(false, BlockStateModelGenerator.createWeightedVariant(off))
+                .register(true, BlockStateModelGenerator.createWeightedVariant(ModelIds.getBlockSubModelId(block, "_on"))))
+        );
+        if (block.asItem() != null) generator.registerItemModel(block.asItem(), off);
     }
 
     private void registerColumnWithFront(BlockStateModelGenerator generator, Block block) {

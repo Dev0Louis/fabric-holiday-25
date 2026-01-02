@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "holiday-server-mod:block/chunk_loader_top",
-    "side": "holiday-server-mod:block/chunk_loader_side"
-  }
-}
