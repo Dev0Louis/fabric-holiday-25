@@ -1,7 +1,5 @@
 package holiday.screen;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
@@ -21,21 +19,22 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class AttributeTableScreenHandler extends ScreenHandler {
+
+    private boolean updating = false;
 
     private final Inventory inventory = new SimpleInventory(3);
 
     public AttributeTableScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
         super(HolidayServerScreenHandlers.ATTRIBUTE_TABLE, syncId);
 
-
         this.addSlot(new Slot(inventory, 0, 15, 15));
-
         this.addSlot(new Slot(inventory, 1, 15, 52));
 
         this.addSlot(new Slot(inventory, 2, 145, 39) {
@@ -69,66 +68,88 @@ public class AttributeTableScreenHandler extends ScreenHandler {
     }
 
     public AttributeTableScreenHandler(int syncId, PlayerInventory inv) {
-        this(syncId, inv, null);
+        this(syncId, inv, ScreenHandlerContext.EMPTY);
     }
 
     @Override
     public void onContentChanged(Inventory inv) {
-        if (inv != inventory) return;
+        if (inv != inventory || updating) return;
+
+        updating = true;
 
         ItemStack left = inventory.getStack(0);
         ItemStack right = inventory.getStack(1);
 
         if (left.isEmpty() || right.isEmpty()) {
-            if (!inventory.getStack(2).isEmpty()) inventory.setStack(2, ItemStack.EMPTY);
+            if (!inventory.getStack(2).isEmpty()) {
+                inventory.setStack(2, ItemStack.EMPTY);
+            }
+            updating = false;
             return;
         }
 
         ItemStack output = left.copy();
         output.setCount(1);
 
-        Multimap<RegistryEntry<EntityAttribute>, @NotNull AttributeMod> modifiers = HashMultimap.create();
+        Map<ModifierKey, Double> merged = new HashMap<>();
+        mergeModifiers(left, merged);
+        mergeModifiers(right, merged);
 
-        copyModifiers(left, modifiers);
-        copyModifiers(right, modifiers);
+        if (!merged.isEmpty()) {
+            AttributeModifiersComponent.Builder builder =
+                AttributeModifiersComponent.builder();
 
-        if (!modifiers.isEmpty()) {
-            var builder = AttributeModifiersComponent.builder();
-            modifiers.forEach((attr, mod) ->
-                builder.add(attr, mod.m, mod.slot)
-            );
+            merged.forEach((key, value) -> {
+                UUID id = UUID.nameUUIDFromBytes(
+                    (key.attribute().toString() + "_" + key.slot().name() + "_" + key.operation())
+                        .getBytes(StandardCharsets.UTF_8)
+                );
+
+                builder.add(
+                    key.attribute(),
+                    new EntityAttributeModifier(
+                        Identifier.of("holiday", "combined_" + id.toString().substring(0, 6)),
+                        value,
+                        key.operation()
+                    ),
+                    key.slot()
+                );
+            });
+
             output.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, builder.build());
         }
 
-        ItemStack current = inventory.getStack(2);
-        if (!ItemStack.areEqual(output, current)) {
+        if (!ItemStack.areEqual(output, inventory.getStack(2))) {
+            inventory.setStack(2, output);
+        }
+
+        updating = false;
+
+
+        if (!ItemStack.areEqual(output, inventory.getStack(2))) {
             inventory.setStack(2, output);
         }
     }
 
-    private void copyModifiers(ItemStack stack, Multimap<RegistryEntry<EntityAttribute>, AttributeMod> modifiers) {
+    private void mergeModifiers(ItemStack stack, Map<ModifierKey, Double> merged) {
         AttributeModifiersComponent comp = stack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
         if (comp == null) return;
 
+        AttributeModifierSlot correctSlot = getCorrectModifierSlot(stack);
+
         comp.modifiers().forEach(entry -> {
             EntityAttributeModifier m = entry.modifier();
-            UUID stableId = UUID.nameUUIDFromBytes(
-                (m.id().toString() + "_" + entry.slot().name()).getBytes(StandardCharsets.UTF_8)
+
+            ModifierKey key = new ModifierKey(
+                entry.attribute(),
+                correctSlot,
+                m.operation()
             );
 
-            modifiers.put(
-                entry.attribute(),
-                new AttributeMod(
-                    new EntityAttributeModifier(
-                        Identifier.of(m.id().getNamespace(), m.id().getPath() + "_combined_" + stableId.toString().substring(0, 4)),
-                        m.value(),
-                        m.operation()
-                    ),
-                    entry.slot()
-                )
-            );
+            merged.merge(key, m.value(), Double::sum);
         });
     }
+
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int slotIndex) {
@@ -170,7 +191,6 @@ public class AttributeTableScreenHandler extends ScreenHandler {
         return result;
     }
 
-
     @Override
     public boolean canUse(PlayerEntity player) {
         return true;
@@ -179,19 +199,47 @@ public class AttributeTableScreenHandler extends ScreenHandler {
     @Override
     public void onClosed(PlayerEntity player) {
         super.onClosed(player);
-        if (!this.inventory.isEmpty()) {
-            boolean bl = player.isRemoved() && player.getRemovalReason() != Entity.RemovalReason.CHANGED_DIMENSION;
-            boolean bl2 = player instanceof ServerPlayerEntity serverPlayerEntity && serverPlayerEntity.isDisconnected();
-            this.inventory.forEach(stack -> {
-                if (bl || bl2) {
-                    player.dropItem(stack, false);
-                } else if (player instanceof ServerPlayerEntity) {
-                    player.getInventory().offerOrDrop(stack);
-                }
-            });
 
+        boolean removed = player.isRemoved() &&
+            player.getRemovalReason() != Entity.RemovalReason.CHANGED_DIMENSION;
+        boolean disconnected = player instanceof ServerPlayerEntity sp && sp.isDisconnected();
+
+        for (int i = 0; i < 2; i++) {
+            ItemStack stack = inventory.getStack(i);
+            if (stack.isEmpty()) continue;
+
+            if (removed || disconnected) {
+                player.dropItem(stack, false);
+            } else if (player instanceof ServerPlayerEntity) {
+                player.getInventory().offerOrDrop(stack);
+            }
+
+            inventory.setStack(i, ItemStack.EMPTY);
         }
+
+        inventory.setStack(2, ItemStack.EMPTY);
     }
 
-        private record AttributeMod(EntityAttributeModifier m, AttributeModifierSlot slot) {}
+    private AttributeModifierSlot getCorrectModifierSlot(ItemStack stack) {
+        var equip = stack.get(DataComponentTypes.EQUIPPABLE);
+        if (equip == null) return AttributeModifierSlot.MAINHAND;
+
+        var slot = equip.slot();
+
+        return switch (slot) {
+            case HEAD -> AttributeModifierSlot.HEAD;
+            case CHEST -> AttributeModifierSlot.CHEST;
+            case LEGS -> AttributeModifierSlot.LEGS;
+            case FEET -> AttributeModifierSlot.FEET;
+            case OFFHAND -> AttributeModifierSlot.OFFHAND;
+            default -> AttributeModifierSlot.MAINHAND;
+        };
+    }
+
+
+    private record ModifierKey(
+        RegistryEntry<EntityAttribute> attribute,
+        AttributeModifierSlot slot,
+        EntityAttributeModifier.Operation operation
+    ) {}
 }
