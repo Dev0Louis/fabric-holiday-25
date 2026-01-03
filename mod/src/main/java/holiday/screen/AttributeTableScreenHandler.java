@@ -1,11 +1,13 @@
 package holiday.screen;
 
+import holiday.CommonEntrypoint;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -18,7 +20,6 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Identifier;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import java.util.UUID;
 
 public class AttributeTableScreenHandler extends ScreenHandler {
 
+    private final ScreenHandlerContext context;
     private boolean updating = false;
 
     private final Inventory inventory = new SimpleInventory(3);
@@ -37,6 +39,8 @@ public class AttributeTableScreenHandler extends ScreenHandler {
         this.addSlot(new Slot(inventory, 0, 15, 15));
         this.addSlot(new Slot(inventory, 1, 15, 52));
 
+        this.context = context;
+
         this.addSlot(new Slot(inventory, 2, 145, 39) {
             @Override
             public boolean canInsert(ItemStack stack) {
@@ -45,12 +49,8 @@ public class AttributeTableScreenHandler extends ScreenHandler {
 
             @Override
             public void onTakeItem(PlayerEntity player, ItemStack stack) {
-                inventory.setStack(0, ItemStack.EMPTY);
-                inventory.setStack(1, ItemStack.EMPTY);
+                finalizeCraft();
                 super.onTakeItem(player, stack);
-                context.run((world, pos) -> world.playSound(
-                    null, pos, SoundEvents.BLOCK_SMITHING_TABLE_USE, SoundCategory.BLOCKS, 1.0f, 1.0f
-                ));
             }
         });
 
@@ -99,19 +99,22 @@ public class AttributeTableScreenHandler extends ScreenHandler {
                 AttributeModifiersComponent.builder();
 
             merged.forEach((key, value) -> {
-                UUID id = UUID.nameUUIDFromBytes(
-                    (key.attribute().toString() + "_" + key.slot().name() + "_" + key.operation())
-                        .getBytes(StandardCharsets.UTF_8)
-                );
+                double finalValue = value;
+
+                if (key.attribute() == EntityAttributes.ATTACK_SPEED) {
+                    finalValue = Math.max(finalValue, 0.01);
+                }
+
+                UUID id = UUID.randomUUID();
 
                 builder.add(
                     key.attribute(),
                     new EntityAttributeModifier(
-                        Identifier.of("holiday", "combined_" + id.toString().substring(0, 6)),
-                        value,
+                        CommonEntrypoint.identifier("combined_" + id.toString().substring(0, 6)),
+                        finalValue,
                         key.operation()
                     ),
-                    key.slot()
+                    AttributeModifierSlot.ANY
                 );
             });
 
@@ -123,25 +126,17 @@ public class AttributeTableScreenHandler extends ScreenHandler {
         }
 
         updating = false;
-
-
-        if (!ItemStack.areEqual(output, inventory.getStack(2))) {
-            inventory.setStack(2, output);
-        }
     }
 
     private void mergeModifiers(ItemStack stack, Map<ModifierKey, Double> merged) {
         AttributeModifiersComponent comp = stack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
         if (comp == null) return;
 
-        AttributeModifierSlot correctSlot = getCorrectModifierSlot(stack);
-
         comp.modifiers().forEach(entry -> {
             EntityAttributeModifier m = entry.modifier();
 
             ModifierKey key = new ModifierKey(
                 entry.attribute(),
-                correctSlot,
                 m.operation()
             );
 
@@ -164,10 +159,7 @@ public class AttributeTableScreenHandler extends ScreenHandler {
             if (!this.insertItem(stack, 3, this.slots.size(), true)) {
                 return ItemStack.EMPTY;
             }
-
-            inventory.setStack(0, ItemStack.EMPTY);
-            inventory.setStack(1, ItemStack.EMPTY);
-
+            finalizeCraft();
             slot.onQuickTransfer(stack, result);
         }
         else if (slotIndex < 2) {
@@ -219,26 +211,26 @@ public class AttributeTableScreenHandler extends ScreenHandler {
         inventory.setStack(2, ItemStack.EMPTY);
     }
 
-    private AttributeModifierSlot getCorrectModifierSlot(ItemStack stack) {
-        var equip = stack.get(DataComponentTypes.EQUIPPABLE);
-        if (equip == null) return AttributeModifierSlot.MAINHAND;
+    private void finalizeCraft() {
+        inventory.setStack(0, ItemStack.EMPTY);
+        inventory.setStack(1, ItemStack.EMPTY);
 
-        var slot = equip.slot();
+        if (this.context.get((world, pos) -> world == null || world.isClient(), true)) return;
 
-        return switch (slot) {
-            case HEAD -> AttributeModifierSlot.HEAD;
-            case CHEST -> AttributeModifierSlot.CHEST;
-            case LEGS -> AttributeModifierSlot.LEGS;
-            case FEET -> AttributeModifierSlot.FEET;
-            case OFFHAND -> AttributeModifierSlot.OFFHAND;
-            default -> AttributeModifierSlot.MAINHAND;
-        };
+        this.context.run((world, pos) -> world.playSound(
+            null,
+            pos,
+            SoundEvents.BLOCK_SMITHING_TABLE_USE,
+            SoundCategory.BLOCKS,
+            1.0f,
+            1.0f
+        ));
     }
+
 
 
     private record ModifierKey(
         RegistryEntry<EntityAttribute> attribute,
-        AttributeModifierSlot slot,
         EntityAttributeModifier.Operation operation
     ) {}
 }
