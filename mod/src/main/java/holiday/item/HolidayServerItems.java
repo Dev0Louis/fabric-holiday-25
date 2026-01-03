@@ -38,6 +38,9 @@ public final class HolidayServerItems {
     public static final Item TELE_INHIBITOR = register("tele_inhibitor", settings -> new BlockItem(HolidayServerBlocks.TELE_INHIBITOR, settings
         .useBlockPrefixedTranslationKey()));
 
+    public static final Item SCULK_SILENCER = register("sculk_silencer", settings -> new BlockItem(HolidayServerBlocks.SCULK_SILENCER, settings
+        .useBlockPrefixedTranslationKey()));
+
     public static final Item FABRIC_PATTERN_ITEM = register("fabric_banner_pattern", new Item.Settings().maxCount(1).component(DataComponentTypes.PROVIDES_BANNER_PATTERNS, HolidayServerBannerPatternTags.FABRIC_PATTERN_ITEM));
     public static final Item TATER_PATTERN_ITEM = register("tater_banner_pattern", new Item.Settings().maxCount(1).component(DataComponentTypes.PROVIDES_BANNER_PATTERNS, HolidayServerBannerPatternTags.TATER_PATTERN_ITEM));
 
@@ -66,7 +69,7 @@ public final class HolidayServerItems {
     public static final Item FINE_GRAVEL = register("fine_gravel", settings -> new Item(settings.recipeRemainder(Items.BOWL)));
 
     public static final Item ECHO_DUST = register("echo_dust", Item::new);
-  
+
     public static final Potion HASTE_POTION = Registry.register(
         Registries.POTION,
         RegistryKey.of(RegistryKeys.POTION, CommonEntrypoint.identifier("haste_potion")),
@@ -126,7 +129,7 @@ public final class HolidayServerItems {
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.addAfter(Items.HOPPER, GOLDEN_HOPPER, HOPPER_MITE);
-            entries.addAfter(Items.REDSTONE_BLOCK, REDSTONE_SAND, TELE_INHIBITOR);
+            entries.addAfter(Items.REDSTONE_BLOCK, REDSTONE_SAND, TELE_INHIBITOR, SCULK_SILENCER);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries ->

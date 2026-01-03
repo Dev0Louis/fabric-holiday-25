@@ -27,6 +27,7 @@
     "ShulkerEntityMixin",
     "SingleStackStorageMixin",
     "SlipperyMixin",
+    "SonicBoomMixin",
     "WhitelistCommandMixin",
     "WitherEntityMixin",
     "squared.WitherEntityMixinSquared"
