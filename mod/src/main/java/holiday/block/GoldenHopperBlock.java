@@ -1,13 +1,12 @@
 package holiday.block;
 
-import holiday.block.blockentity.GoldenHopperBlockEntity;
-import holiday.block.blockentity.HolidayServerBlockEntities;
+import holiday.block.entity.GoldenHopperBlockEntity;
+import holiday.block.entity.HolidayServerBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCollisionHandler;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +26,7 @@ public class GoldenHopperBlock extends HopperBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient() ? null : validateTicker(type, HolidayServerBlockEntities.GOLDEN_HOPPER_BLOCK_ENTITY, GoldenHopperBlockEntity::serverTick);
+        return world.isClient() ? null : validateTicker(type, HolidayServerBlockEntityTypes.GOLDEN_HOPPER, GoldenHopperBlockEntity::serverTick);
     }
 
     @Override

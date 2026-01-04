@@ -1,14 +1,11 @@
 package holiday.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import holiday.block.HolidayServerBlocks;
-import holiday.block.blockentity.GoldenHopperBlockEntity;
-import holiday.block.blockentity.HolidayServerBlockEntities;
+import holiday.block.entity.HolidayServerBlockEntityTypes;
 import holiday.item.HopperMiteItem;
 import holiday.tag.HolidayServerItemTags;
 import net.minecraft.block.BlockState;
@@ -23,9 +20,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.gen.Accessor;
-import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -74,32 +68,8 @@ public abstract class HopperBlockEntityMixin {
     )
     private static BlockEntityType<?> goldenHopperMoment(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         return state.isOf(HolidayServerBlocks.GOLDEN_HOPPER)
-            ? HolidayServerBlockEntities.GOLDEN_HOPPER_BLOCK_ENTITY
+            ? HolidayServerBlockEntityTypes.GOLDEN_HOPPER
             : blockEntityType;
-    }
-
-    @WrapOperation(
-        method = "insert",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/block/entity/HopperBlockEntity;removeStack(II)Lnet/minecraft/item/ItemStack;"
-        )
-    )
-    private static ItemStack fastGolden(HopperBlockEntity instance, int slot, int amount, Operation<ItemStack> original) {
-        if (instance instanceof GoldenHopperBlockEntity) {
-            ItemStack stack = instance.getStack(slot);
-            if (stack.isEmpty()) return ItemStack.EMPTY;
-
-
-            ItemStack toInsert = instance.removeStack(slot, stack.getCount());
-            ItemStack leftover = HopperBlockEntity.transfer(
-                instance,
-                invokeGetOutputInventory(instance.getWorld(), instance.getPos(), instance),
-                toInsert,
-                ((HopperBlockEntityMixin) (Object) instance).getFacing().getOpposite()
-            );
-        }
-        return original.call(instance, slot, amount);
     }
 
     @Inject(method = "extract(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/entity/ItemEntity;)Z", at = @At("HEAD"))
@@ -139,10 +109,4 @@ public abstract class HopperBlockEntityMixin {
             original.get().getStack().increment(_itemEntity.getStack().getCount());
         }
     }
-    @Invoker("getOutputInventory")
-    static Inventory invokeGetOutputInventory(World world, BlockPos pos, HopperBlockEntity blockEntity) {
-        throw new AssertionError("Mixin failed to apply");
-    }
-    @Accessor("facing")
-    abstract Direction getFacing();
 }

@@ -2,7 +2,6 @@ package holiday;
 
 import com.mojang.serialization.Codec;
 import holiday.block.HolidayServerBlocks;
-import holiday.block.blockentity.HolidayServerBlockEntities;
 import holiday.block.entity.HolidayServerBlockEntityTypes;
 import holiday.component.HolidayServerDataComponentTypes;
 import holiday.entity.HolidayServerEntities;
@@ -87,7 +86,6 @@ public class CommonEntrypoint implements ModInitializer {
         HolidayServerLootContextTypes.register();
         HolidayServerScreenHandlers.register();
         HolidayServerSoundEvents.register();
-        HolidayServerBlockEntities.register();
         HolidayServerEffects.register();
         HolidayServerEntities.register();
         BaritoneInit.onInitialize();

@@ -1,6 +1,5 @@
 package holiday.mixin;
 
-import holiday.block.blockentity.GoldenHopperBlockEntity;
 import holiday.item.HopperMiteItem;
 import net.fabricmc.fabric.impl.transfer.item.InventoryStorageImpl;
 import net.minecraft.item.ItemStack;
@@ -22,7 +21,6 @@ public abstract class InventorySlotWrapperMixin {
     @ModifyArg(method = "extract(Lnet/fabricmc/fabric/api/transfer/v1/item/ItemVariant;JLnet/fabricmc/fabric/api/transfer/v1/transaction/TransactionContext;)J", at = @At(value = "INVOKE", target = "Lnet/fabricmc/fabric/api/transfer/v1/item/base/SingleStackStorage;extract(Lnet/fabricmc/fabric/api/transfer/v1/item/ItemVariant;JLnet/fabricmc/fabric/api/transfer/v1/transaction/TransactionContext;)J"))
     private long goldenHopperBiggerExtract(long size) {
         if (HopperMiteItem.isFood(((InventoryStorageImplAccessor)storage).getInventory(), getStack())) return 0;
-        if (((InventoryStorageImplAccessor)storage).getInventory() instanceof GoldenHopperBlockEntity) return getStack().getCount();
         return size;
     }
 }

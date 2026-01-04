@@ -13,6 +13,7 @@ import net.minecraft.registry.RegistryKeys;
 
 public final class HolidayServerBlockEntityTypes {
     public static final BlockEntityType<InducerBlockEntity> INDUCER = register("inducer", InducerBlockEntity::new, HolidayServerBlocks.INDUCER);
+    public static final BlockEntityType<GoldenHopperBlockEntity> GOLDEN_HOPPER = register("golden_hopper", GoldenHopperBlockEntity::new, HolidayServerBlocks.GOLDEN_HOPPER);
 
     private HolidayServerBlockEntityTypes() {
     }
