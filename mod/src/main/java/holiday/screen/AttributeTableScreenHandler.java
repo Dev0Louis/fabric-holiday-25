@@ -92,19 +92,30 @@ public class AttributeTableScreenHandler extends ScreenHandler {
     private ItemStack computeOutput(ItemStack top, ItemStack bottom) {
         ItemStack output = top.copy();
 
-        if (mode == Mode.MERGE) {
-            if (!bottom.isEmpty()) {
+        switch (mode) {
+            case MERGE -> {
+                if (bottom.isEmpty()) {
+                    return ItemStack.EMPTY;
+                }
+
                 Map<ModifierKey, Double> merged = new HashMap<>();
                 mergeModifiers(top, merged);
                 mergeModifiers(bottom, merged);
                 applyMergedModifiers(output, merged);
             }
-        } else if (mode == Mode.REMOVE) {
-            removeSelectedAttribute(output, selectedAttribute);
+
+            case REMOVE -> {
+                boolean changed = removeSelectedAttribute(output, selectedAttribute);
+
+                if (!changed) {
+                    return ItemStack.EMPTY;
+                }
+            }
         }
 
         return output;
     }
+
 
     private void mergeModifiers(ItemStack stack, Map<ModifierKey, Double> merged) {
         AttributeModifiersComponent comp = stack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
@@ -141,23 +152,35 @@ public class AttributeTableScreenHandler extends ScreenHandler {
         stack.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, builder.build());
     }
 
-    private void removeSelectedAttribute(ItemStack stack, RegistryEntry<EntityAttribute> attribute) {
-        if (attribute == null) return;
+    private boolean removeSelectedAttribute(ItemStack stack, RegistryEntry<EntityAttribute> attribute) {
+        if (attribute == null) return false;
 
         AttributeModifiersComponent comp = stack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
-        if (comp == null) return;
+        if (comp == null) return false;
 
+        boolean removedAny = false;
         AttributeModifiersComponent.Builder builder = AttributeModifiersComponent.builder();
-        comp.modifiers().forEach(entry -> {
-            if (!entry.attribute().value().equals(attribute.value())) {
-                builder.add(entry.attribute(), entry.modifier(), entry.slot());
+
+        for (var entry : comp.modifiers()) {
+            if (entry.attribute().value().equals(attribute.value())) {
+                removedAny = true;
+                continue;
             }
-        });
+            builder.add(entry.attribute(), entry.modifier(), entry.slot());
+        }
+
+        if (!removedAny) return false;
 
         AttributeModifiersComponent result = builder.build();
-        if (result.modifiers().isEmpty()) stack.remove(DataComponentTypes.ATTRIBUTE_MODIFIERS);
-        else stack.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, result);
+        if (result.modifiers().isEmpty()) {
+            stack.remove(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+        } else {
+            stack.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, result);
+        }
+
+        return true;
     }
+
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int slotIndex) {
