@@ -39,7 +39,7 @@ public class ServerEntrypoint implements DedicatedServerModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             announceServerEvent("Server has started! Have fun playing", CONFIG.discordWebhookUrl());
         });
-        ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             announceServerEvent("Playing time is over, come back later!", CONFIG.discordWebhookUrl());
         });
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> announcePlayerJoin(handler.player, handler.player.getName().getString() + " joined the server", CONFIG.discordWebhookUrl()));
