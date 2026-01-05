@@ -36,8 +36,8 @@ public class AttributeTableScreenHandler extends ScreenHandler {
     public AttributeTableScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
         super(HolidayServerScreenHandlers.ATTRIBUTE_TABLE, syncId);
 
-        this.addSlot(new Slot(inventory, 0, 15, 15));
-        this.addSlot(new Slot(inventory, 1, 15, 52));
+        this.addSlot(new SingleItemSlot(inventory, 0, 15, 15));
+        this.addSlot(new SingleItemSlot(inventory, 1, 15, 52));
 
         this.context = context;
 
@@ -49,8 +49,8 @@ public class AttributeTableScreenHandler extends ScreenHandler {
 
             @Override
             public void onTakeItem(PlayerEntity player, ItemStack stack) {
-                finalizeCraft();
                 super.onTakeItem(player, stack);
+                finalizeCraft();
             }
         });
 
@@ -173,8 +173,8 @@ public class AttributeTableScreenHandler extends ScreenHandler {
             if (!this.insertItem(stack, 3, this.slots.size(), true)) {
                 return ItemStack.EMPTY;
             }
-            finalizeCraft();
             slot.onQuickTransfer(stack, result);
+            finalizeCraft();
         }
         else if (slotIndex < 2) {
             if (!this.insertItem(stack, 3, this.slots.size(), false)) {
@@ -268,5 +268,16 @@ public class AttributeTableScreenHandler extends ScreenHandler {
     public enum Mode {
         MERGE,
         REMOVE
+    }
+
+    private class SingleItemSlot extends Slot {
+        public SingleItemSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        @Override
+        public int getMaxItemCount() {
+            return 1;
+        }
     }
 }
