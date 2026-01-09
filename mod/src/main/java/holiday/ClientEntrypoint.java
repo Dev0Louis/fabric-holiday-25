@@ -84,7 +84,6 @@ public class ClientEntrypoint implements ClientModInitializer {
 
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper, context) -> {
             if (entityRenderer instanceof PlayerEntityRenderer<?> playerEntityRenderer) {
-                //registrationHelper.register(new WitherCrownFeatureRenderer(playerEntityRenderer, context.getModelSet()));
                 registrationHelper.register(new WitherCrownFeatureRenderer(playerEntityRenderer, context.getEntityModels()));
             }
         });
