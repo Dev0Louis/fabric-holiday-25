@@ -2,7 +2,6 @@ package holiday.block;
 
 import com.mojang.serialization.MapCodec;
 import holiday.screen.AttributeTableScreenHandler;
-import holiday.screen.StorageTerminalScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;

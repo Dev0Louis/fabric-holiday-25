@@ -5,10 +5,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import holiday.ServerEntrypoint;
 import holiday.entity.HeartEntity;
 import holiday.idkwheretoputthis.WitherEntityExtension;
+import holiday.item.HolidayServerItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.boss.WitherEntity;
@@ -145,6 +147,15 @@ public abstract class WitherEntityMixin extends HostileEntity implements WitherE
 
     @Override
     public boolean canTarget(LivingEntity target) {
+        boolean shouldWitherOnlyAttackCrown = (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER && ServerEntrypoint.CONFIG != null) ? ServerEntrypoint.CONFIG.shouldWitherOnlyAttackCrown() : true;
+
+        if (shouldWitherOnlyAttackCrown) {
+            if (target.getEquippedStack(EquipmentSlot.HEAD).isOf(HolidayServerItems.WITHER_CROWN))
+                return super.canTarget(target);
+            else
+                return false;
+        }
+
         boolean shouldTatherTargetPlayers = FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER ? ServerEntrypoint.CONFIG != null && ServerEntrypoint.CONFIG.shouldTatherTargetPlayers() : false;
         if (fabric_holiday_25$isInOverWorld() && target instanceof PlayerEntity && !shouldTatherTargetPlayers) {
             return false;

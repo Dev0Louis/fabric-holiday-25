@@ -72,5 +72,6 @@
   "item.holiday-server-mod.baritone": "Baritone",
   "subtitles.baritone": "Baritone plays",
   "block.holiday-server-mod.chunk_loader": "Chunk Loader",
-  "block.holiday-server-mod.attribute_table": "Attribute Table"
+  "block.holiday-server-mod.attribute_table": "Attribute Table",
+  "item.holiday-server-mod.wither_crown": "Wither Crown"
 }

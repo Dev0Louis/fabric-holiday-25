@@ -1,6 +1,7 @@
 package holiday;
 
 import com.mojang.serialization.Codec;
+import holiday.baritone.BaritoneInit;
 import holiday.block.HolidayServerBlocks;
 import holiday.block.entity.HolidayServerBlockEntityTypes;
 import holiday.component.HolidayServerDataComponentTypes;
@@ -9,7 +10,6 @@ import holiday.entity.effect.HolidayServerEffects;
 import holiday.event.InhibitEvent;
 import holiday.item.HolidayServerItems;
 import holiday.loot.HolidayServerLootContextTypes;
-import holiday.baritone.BaritoneInit;
 import holiday.screen.HolidayServerScreenHandlers;
 import holiday.screen.StorageTerminalScreenHandler;
 import holiday.sound.HolidayServerSoundEvents;
@@ -23,7 +23,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerConfigurationConnectionEvents
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

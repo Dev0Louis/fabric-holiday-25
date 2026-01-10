@@ -9,15 +9,10 @@ import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
 import net.minecraft.client.data.*;
-import net.minecraft.client.render.model.json.ModelVariant;
-import net.minecraft.client.render.model.json.WeightedVariant;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.ItemModels;
-import net.minecraft.client.data.Models;
-import net.minecraft.client.data.TexturedModel;
 import net.minecraft.client.render.item.model.ItemModel;
 import net.minecraft.client.render.item.model.RangeDispatchItemModel;
+import net.minecraft.client.render.model.json.ModelVariant;
+import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.item.Item;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
@@ -52,6 +47,7 @@ public class HolidayServerModelProvider extends FabricModelProvider {
         generator.register(HolidayServerItems.STONE_MEAL, Models.GENERATED);
         generator.register(HolidayServerItems.FINE_GRAVEL, Models.GENERATED);
         generator.register(HolidayServerItems.GROUND_GRAVEL, Models.GENERATED);
+        generator.register(HolidayServerItems.WITHER_CROWN, Models.GENERATED);
     }
 
     private void registerMemory(ItemModelGenerator generator, Item item, int count) {

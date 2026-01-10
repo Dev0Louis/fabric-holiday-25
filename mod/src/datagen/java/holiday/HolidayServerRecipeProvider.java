@@ -156,6 +156,15 @@ public class HolidayServerRecipeProvider extends FabricRecipeProvider {
                     .pattern("PP")
                     .criterion("has_copper_ingot", this.conditionsFromItem(Items.COPPER_INGOT))
                     .offerTo(exporter);
+
+                this.createShaped(RecipeCategory.MISC, HolidayServerItems.WITHER_CROWN)
+                    .pattern("S S")
+                    .pattern("GDG")
+                    .input('S', Items.WITHER_SKELETON_SKULL)
+                    .input('G', Items.GILDED_BLACKSTONE)
+                    .input('D', Items.DIAMOND)
+                    .criterion("has_wither_skeleton_skull", this.conditionsFromItem(Items.WITHER_SKELETON_SKULL))
+                    .offerTo(exporter);
             }
         };
     }

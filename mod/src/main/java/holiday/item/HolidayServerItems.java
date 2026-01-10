@@ -89,6 +89,11 @@ public final class HolidayServerItems {
         .useBlockPrefixedTranslationKey())
     );
 
+    public static final Item WITHER_CROWN = register("wither_crown", new Item.Settings()
+        .maxCount(1)
+        .equippable(EquipmentSlot.HEAD)
+    );
+
     public static Item register(String id, Item.Settings settings) {
         return register(keyOf(id), Item::new, settings);
     }
@@ -112,7 +117,7 @@ public final class HolidayServerItems {
     public static void register() {
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries ->
-            entries.addAfter(Items.TURTLE_HELMET, ABSOLUTELY_SAFE_ARMOR)
+            entries.addAfter(Items.TURTLE_HELMET, ABSOLUTELY_SAFE_ARMOR, WITHER_CROWN)
         );
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
@@ -137,7 +142,6 @@ public final class HolidayServerItems {
             entries.addAfter(Items.BONE_MEAL, STONE_MEAL)
         );
     }
-
 
     public static Item register(String path, Function<Item.Settings, Item> factory) {
         RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, CommonEntrypoint.identifier(path));

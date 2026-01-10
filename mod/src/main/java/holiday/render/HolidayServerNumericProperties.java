@@ -1,7 +1,6 @@
 package holiday.render;
 
 import com.mojang.serialization.MapCodec;
-
 import holiday.CommonEntrypoint;
 import net.minecraft.client.render.item.property.numeric.NumericProperties;
 import net.minecraft.client.render.item.property.numeric.NumericProperty;

@@ -1,7 +1,6 @@
 package holiday.component;
 
 import com.mojang.serialization.Codec;
-
 import holiday.CommonEntrypoint;
 import net.minecraft.component.ComponentType;
 import net.minecraft.item.Item;

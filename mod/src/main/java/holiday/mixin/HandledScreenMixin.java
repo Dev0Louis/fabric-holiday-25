@@ -1,13 +1,8 @@
 package holiday.mixin;
 
-import org.joml.Matrix3x2fStack;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-
 import holiday.render.LargeItemStackCounts;
 import holiday.screen.StorageTerminalScreen;
 import net.minecraft.client.font.TextRenderer;
@@ -15,6 +10,9 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
+import org.joml.Matrix3x2fStack;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(HandledScreen.class)
 public class HandledScreenMixin {

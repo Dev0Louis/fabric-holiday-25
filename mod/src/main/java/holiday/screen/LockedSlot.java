@@ -1,11 +1,11 @@
 package holiday.screen;
 
-import java.util.Optional;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
+
+import java.util.Optional;
 
 /**
  * A slot used for rendering only. It's better to be safe than sorry.

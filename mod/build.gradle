@@ -36,6 +36,8 @@ repositories {
   }
 
   maven { url = "https://maven.bawnorton.com/releases" }
+  // mirror
+  maven { url = "https://maven.enjarai.dev/mirrors" }
 }
 
 loom {

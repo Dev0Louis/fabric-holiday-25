@@ -1,12 +1,5 @@
 package holiday.screen;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.function.Predicate;
-
 import holiday.item.HolidayServerItems;
 import holiday.item.UnsafeMemoryItem;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
@@ -37,6 +30,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+
+import java.util.*;
+import java.util.function.Predicate;
 
 public class StorageTerminalScreenHandler extends ScreenHandler {
     public static final Direction STORAGE_DIRECTION = Direction.UP;

@@ -1,7 +1,6 @@
 package holiday.block;
 
 import com.mojang.serialization.MapCodec;
-
 import holiday.screen.StorageTerminalScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

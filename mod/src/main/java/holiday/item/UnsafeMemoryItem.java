@@ -1,8 +1,5 @@
 package holiday.item;
 
-import java.util.HexFormat;
-import java.util.function.Consumer;
-
 import holiday.component.HolidayServerDataComponentTypes;
 import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.item.Item;
@@ -11,6 +8,9 @@ import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.random.Random;
+
+import java.util.HexFormat;
+import java.util.function.Consumer;
 
 public class UnsafeMemoryItem extends Item {
     private static final HexFormat FORMAT = HexFormat.of().withUpperCase();

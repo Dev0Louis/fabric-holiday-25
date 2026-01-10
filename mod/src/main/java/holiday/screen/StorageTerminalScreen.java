@@ -1,9 +1,5 @@
 package holiday.screen;
 
-import java.util.Objects;
-
-import org.lwjgl.glfw.GLFW;
-
 import holiday.CommonEntrypoint;
 import holiday.CommonEntrypoint.StorageTerminalSearchPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -22,6 +18,9 @@ import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.Objects;
 
 public class StorageTerminalScreen extends HandledScreen<StorageTerminalScreenHandler> {
     private static final Identifier TEXTURE = CommonEntrypoint.identifier("textures/gui/container/storage_terminal.png");

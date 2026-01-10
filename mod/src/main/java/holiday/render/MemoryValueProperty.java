@@ -1,7 +1,6 @@
 package holiday.render;
 
 import com.mojang.serialization.MapCodec;
-
 import holiday.component.HolidayServerDataComponentTypes;
 import net.minecraft.client.render.item.property.numeric.NumericProperty;
 import net.minecraft.client.world.ClientWorld;

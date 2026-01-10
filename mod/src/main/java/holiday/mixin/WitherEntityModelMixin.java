@@ -6,7 +6,9 @@ import net.minecraft.client.render.entity.model.WitherEntityModel;
 import net.minecraft.client.render.entity.state.WitherEntityRenderState;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 // Made with Blockbench 5.0.5
 // Exported for Minecraft version 1.17+ for Yarn
@@ -17,12 +19,8 @@ public class WitherEntityModelMixin extends EntityModel<WitherEntityRenderState>
         super(root);
     }
 
-    /**
-     * @author Tenneb22
-     * @reason tiny_tather ^_^
-     */
-    @Overwrite
-	public static TexturedModelData getTexturedModelData(Dilation dilation) {
+    @Inject(method = "getTexturedModelData", at = @At("HEAD"), cancellable = true)
+    private static void getTexturedModelDataInject(Dilation dilation, CallbackInfoReturnable<TexturedModelData> cir) {
 		ModelData modelData = new ModelData();
 		ModelPartData modelPartData = modelData.getRoot();
 
@@ -52,6 +50,6 @@ public class WitherEntityModelMixin extends EntityModel<WitherEntityRenderState>
 		modelPartData.addChild("right_head", ModelPartBuilder.create().uv(0, 0).cuboid(-5.0F, -9.0F, -5.0F, 8.0F, 12.0F, 8.0F, dilation.add(-1.0F)), ModelTransform.origin(10.0F, 4.0F, 0.0F));
         modelPartData.addChild("left_head", ModelPartBuilder.create().uv(0, 0).cuboid(-5.0F, -9.0F, -5.0F, 8.0F, 12.0F, 8.0F, dilation.add(-1.0F)), ModelTransform.origin(-8.0F, 4.0F, 0.0F));
 
-		return TexturedModelData.of(modelData, 64, 64);
+        cir.setReturnValue(TexturedModelData.of(modelData, 64, 64));
 	}
 }
