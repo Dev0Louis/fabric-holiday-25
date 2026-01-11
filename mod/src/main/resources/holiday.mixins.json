@@ -44,7 +44,8 @@
     "MinecraftClientMixin",
     "PlayerEntityRendererMixin",
     "PlayerEntityRenderStateMixin",
-    "WitherEntityRendererMixin"
+    "WitherEntityRendererMixin",
+    "WitherEntityRenderStateMixin"
   ],
   "injectors": {
     "defaultRequire": 1
