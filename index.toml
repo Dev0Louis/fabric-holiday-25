@@ -65,9 +65,6 @@ file = "mods/crossbow_scoping.pw.toml"
 metafile = true
 
 [[files]]
-file = "mods/eiv-fabric-5.2.0+1.21.11.jar"
-
-[[files]]
 file = "mods/extended-drawers-extensions.pw.toml"
 metafile = true
 
@@ -149,6 +146,10 @@ metafile = true
 
 [[files]]
 file = "mods/promotedserver.pw.toml"
+metafile = true
+
+[[files]]
+file = "mods/rrv.pw.toml"
 metafile = true
 
 [[files]]
